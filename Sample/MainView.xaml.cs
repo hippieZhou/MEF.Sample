@@ -4,17 +4,24 @@ using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.IO;
-using System.Reflection;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
 namespace Sample
 {
-    public partial class MainWindow : Window
+    public partial class MainView : Window
     {
+        /// <summary>
+        /// 如果使用 [ImportMany(typeof(IView))] 的方式，
+        /// 可以省略 Plugins = container.GetExportedValues<IView>();
+        /// </summary>
+        [ImportMany(typeof(IView))]
+        public Lazy<IView, IMetadata>[] Plugins { get; private set; }
+
         private CompositionContainer container = null;
 
-        public MainWindow()
+        public MainView()
         {
             InitializeComponent();
             var dir = new DirectoryInfo(Path.Combine(Environment.CurrentDirectory, "Plugins"));
@@ -24,11 +31,15 @@ namespace Sample
                 container = new CompositionContainer(catalog);
                 container.ComposeParts(this);
 
-                var list = container.GetExportedValues<IView>();
-                foreach (var item in list)
+                Plugins.OrderBy(p => p.Metadata.Priority);
+
+                foreach (var item in Plugins)
                 {
-                    var attr = item.GetType().GetCustomAttribute<ExportMetadataAttribute>();
-                    this.tab.Items.Add(new TabItem() { Header = attr.Value, Content = item });
+                    this.tab.Items.Add(new TabItem()
+                    {
+                        Header = item.Metadata.Name,
+                        Content = item.Value
+                    });
                 }
             }
         }

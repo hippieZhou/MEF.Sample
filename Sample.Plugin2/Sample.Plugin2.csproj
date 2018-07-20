@@ -89,6 +89,10 @@
       <Project>{5b9e373d-59ca-4b05-9a9f-4c03731c3e2c}</Project>
       <Name>Sample.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Sample.Skin\Sample.Skin.csproj">
+      <Project>{3154e27d-c0a2-4695-84a3-271ee7437376}</Project>
+      <Name>Sample.Skin</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Page Include="MainView.xaml">

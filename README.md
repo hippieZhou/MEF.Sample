@@ -77,9 +77,19 @@
     }
 ```
 
+# 涉及内容
+
+* EMF
+	* 延迟加载
+	* 元数据（强类型）导出
+* MVVM
+* 模块通信
+* 样式共享
 
 # 参考：
 
 * [Building Hello MEF – Part II – Metadata and why being Lazy is a good thing.](https://blogs.msdn.microsoft.com/gblock/2009/12/04/building-hello-mef-part-ii-metadata-and-why-being-lazy-is-a-good-thing/)
 * [【WPF】运用MEF实现窗口的动态扩展](https://www.cnblogs.com/tcjiaan/p/5844619.html)
+* [实战MEF（5）：导出元数据](https://www.cnblogs.com/tcjiaan/p/3324552.html)
 * [一个基于MEF的可拓展的WPF Host程序](https://blog.csdn.net/zhaowei303/article/details/38071751)
+* [MEF 编程指南（六）：导出和元数据](https://www.cnblogs.com/JavCof/p/3679224.html)
