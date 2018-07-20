@@ -14,11 +14,14 @@
 * 主程序：Sample
 
 ```C#
-    public partial class MainWindow : Window
+    public partial class MainView : Window
     {
+        [ImportMany(typeof(IView))]
+        public Lazy<IView, IMetadata>[] Plugins { get; private set; }
+
         private CompositionContainer container = null;
 
-        public MainWindow()
+        public MainView()
         {
             InitializeComponent();
             var dir = new DirectoryInfo(Path.Combine(Environment.CurrentDirectory, "Plugins"));
@@ -28,11 +31,15 @@
                 container = new CompositionContainer(catalog);
                 container.ComposeParts(this);
 
-                var list = container.GetExportedValues<IView>();
-                foreach (var item in list)
+                Plugins.OrderBy(p => p.Metadata.Priority);
+
+                foreach (var item in Plugins)
                 {
-                    var attr = item.GetType().GetCustomAttribute<ExportMetadataAttribute>();
-                    this.tab.Items.Add(new TabItem() { Header = attr.Value, Content = item });
+                    this.tab.Items.Add(new TabItem()
+                    {
+                        Header = item.Metadata.Name,
+                        Content = item.Value
+                    });
                 }
             }
         }
@@ -45,11 +52,60 @@
     }
 ```
 
+* 强类型元数据接口及相关实现
+
+```C#
+    public interface IMetadata
+    {
+        [DefaultValue(0)]
+        int Priority { get; }
+        string Name { get; }
+        string Description { get; }
+        string Author { get; }
+        string Version { get; }
+    }
+
+    [MetadataAttribute]
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+    public class CustomExportMetadata : ExportAttribute, IMetadata
+    {
+        public int Priority { get; private set; }
+        public string Name { get; private set; }
+        public string Description { get; private set; }
+        public string Author{ get; private set; }
+        public string Version { get; private set; }
+
+        public CustomExportMetadata() : base(typeof(IMetadata))
+        {
+        }
+        public CustomExportMetadata(int priority):this()
+        {
+            this.Priority = priority;
+        }
+        public CustomExportMetadata(int priority, string name) : this(priority)
+        {
+            this.Name = name;
+        }
+        public CustomExportMetadata(int priority, string name, string description) : this(priority, name)
+        {
+            this.Description = description;
+        }
+        public CustomExportMetadata(int priority, string name, string description, string author) : this(priority, name, description)
+        {
+            this.Author = author;
+        }
+        public CustomExportMetadata(int priority, string name, string description, string author, string version) : this(priority, name, description, author)
+        {
+            this.Version = version;
+        }
+    }
+```
+
 * 子模块 1：Sample.Plugin1
 
 ```C#
     [Export(typeof(IView))]
-    [ExportMetadata("name", "Plugin1")]
+    [CustomExportMetadata(0, "Plugin1")]
     public partial class MainView : UserControl, IView
     {
         [ImportingConstructor]
@@ -66,7 +122,7 @@
 
 ```C#
     [Export(typeof(IView))]
-    [ExportMetadata("name", "Plugin2")]
+    [CustomExportMetadata(1, "Plugin2")]
     public partial class MainView : UserControl, IView
     {
         public MainView()
