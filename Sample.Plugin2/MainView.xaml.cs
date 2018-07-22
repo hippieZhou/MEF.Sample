@@ -19,6 +19,7 @@ namespace Sample.Plugin2
 
         private void Loading_Click(object sender, System.Windows.RoutedEventArgs e)
         {
+            this.lv.Items.Clear();
             foreach (var weight in Weights)
             {
                 var expander = new Expander()
@@ -28,11 +29,6 @@ namespace Sample.Plugin2
                 expander.Content = weight.Value;
                 this.lv.Items.Add(expander);
             }
-        }
-
-        private void Unloading_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-
         }
     }
 }

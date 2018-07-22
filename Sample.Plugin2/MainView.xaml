@@ -27,10 +27,6 @@
                     Margin="12"
                     Click="Loading_Click"
                     Content="Loading  Widgets" />
-                <Button
-                    Margin="12"
-                    Click="Unloading_Click"
-                    Content="Unloading  Widgets" />
             </StackPanel>
             <ListView x:Name="lv" Grid.Column="1" />
         </Grid>
