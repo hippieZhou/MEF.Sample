@@ -144,6 +144,7 @@
 
 # 参考：
 
+* [Managed Extensibility Framework (MEF)](https://docs.microsoft.com/zh-cn/dotnet/framework/mef/index)
 * [Building Hello MEF – Part II – Metadata and why being Lazy is a good thing.](https://blogs.msdn.microsoft.com/gblock/2009/12/04/building-hello-mef-part-ii-metadata-and-why-being-lazy-is-a-good-thing/)
 * [【WPF】运用MEF实现窗口的动态扩展](https://www.cnblogs.com/tcjiaan/p/5844619.html)
 * [实战MEF（5）：导出元数据](https://www.cnblogs.com/tcjiaan/p/3324552.html)

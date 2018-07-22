@@ -10,7 +10,7 @@ using System.Windows.Controls;
 
 namespace Sample
 {
-    public partial class MainView : Window
+    public partial class Shell : Window
     {
         /// <summary>
         /// 如果使用 [ImportMany(typeof(IView))] 的方式，
@@ -21,15 +21,23 @@ namespace Sample
 
         private CompositionContainer container = null;
 
-        public MainView()
+        public Shell()
         {
             InitializeComponent();
-            var dir = new DirectoryInfo(Path.Combine(Environment.CurrentDirectory, "Plugins"));
+            
+            var dir = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
             if (dir.Exists)
             {
                 var catalog = new DirectoryCatalog(dir.FullName, "Sample.*.dll");
                 container = new CompositionContainer(catalog);
-                container.ComposeParts(this);
+                try
+                {
+                    container.ComposeParts(this);
+                }
+                catch (CompositionException compositionEx)
+                {
+                    Console.WriteLine(compositionEx.ToString());
+                }
 
                 Plugins.OrderBy(p => p.Metadata.Priority);
 
