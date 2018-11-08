@@ -14,7 +14,7 @@ namespace Sample
     {
         /// <summary>
         /// 如果使用 [ImportMany(typeof(IView))] 的方式，
-        /// 可以省略 Plugins = container.GetExportedValues<IView>();
+        /// 可以省略 Plugins = container.GetExports<IView,IMetadata>();
         /// </summary>
         [ImportMany(typeof(IView))]
         public Lazy<IView, IMetadata>[] Plugins { get; private set; }
