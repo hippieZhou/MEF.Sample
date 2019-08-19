@@ -1,17 +1,17 @@
-# ÔÚ WPF ÖĞÊµÏÖ²å¼şÊ½¿ª·¢ (MEF + MvvmLightLibsStd10)
+# åœ¨ WPF ä¸­å®ç°æ’ä»¶å¼å¼€å‘ (MEF + MvvmLightLibsStd10)
 
-> Ö®Ç°Ò»Ö±Ê¹ÓÃ MvvmLight ½øĞĞÏà¹ØµÄ WPF ¿ª·¢¹¤×÷£¬²å¼şÊ½¿ª·¢»¹ÊÇÔÚ 2 ÄêÇ°½Ó´¥µ½ Prism ¿ò¼Üºó²ÅÕæÕıÊµ¼ù¹ı£¬ÓÉÓÚ Prism ±¾ÉíÌ«ÖØ£¬²»Ì«ÊÊºÏĞÂÈËÈëÃÅ£¬ÎÒµ±³õÒ²ÊÇÀí½âÁËºÃ¾ÃÒ»¶ÎÊ±¼ä¡£
-ÕâÁ½ÌìÓÖ¿´ÁËÒ»ÏÂ MEF µÄÏà¹Ø¶«Î÷£¬·¢ÏÖÀí½âÆğÀ´Ë³³©¶àÁË£¬ÓÚÊÇĞ´ÁËÒ»¸ö¼òÒ×°æµÄ Demo Á·Ò»ÏÂÊÖ
+> ä¹‹å‰ä¸€ç›´ä½¿ç”¨ MvvmLight è¿›è¡Œç›¸å…³çš„ WPF å¼€å‘å·¥ä½œï¼Œæ’ä»¶å¼å¼€å‘è¿˜æ˜¯åœ¨ 2 å¹´å‰æ¥è§¦åˆ° Prism æ¡†æ¶åæ‰çœŸæ­£å®è·µè¿‡ï¼Œç”±äº Prism æœ¬èº«å¤ªé‡ï¼Œä¸å¤ªé€‚åˆæ–°äººå…¥é—¨ï¼Œæˆ‘å½“åˆä¹Ÿæ˜¯ç†è§£äº†å¥½ä¹…ä¸€æ®µæ—¶é—´ã€‚
+è¿™ä¸¤å¤©åˆçœ‹äº†ä¸€ä¸‹ MEF çš„ç›¸å…³ä¸œè¥¿ï¼Œå‘ç°ç†è§£èµ·æ¥é¡ºç•…å¤šäº†ï¼Œäºæ˜¯å†™äº†ä¸€ä¸ªç®€æ˜“ç‰ˆçš„ Demo ç»ƒä¸€ä¸‹æ‰‹
 
 
-## Ê¾ÀıÃèÊö
+## ç¤ºä¾‹æè¿°
 
-* Í¨¹ı IOC ºÍ DI ·½Ê½½«·şÎñºÍÄ£¿éµ½´¦ºÍ¶¯Ì¬¼ÓÔØ
-* Í¨¹ıÊ¹ÓÃ MvvmLight µÄ MessengerInstance ÊµÏÖÄ£¿é¼äÍ¨ĞÅ
+* é€šè¿‡ IOC å’Œ DI æ–¹å¼å°†æœåŠ¡å’Œæ¨¡å—å¯¼å‡ºå’ŒåŠ¨æ€åŠ è½½
+* é€šè¿‡ä½¿ç”¨ MvvmLight çš„ MessengerInstance å®ç°æ¨¡å—é—´é€šä¿¡
 
-## ¹Ø¼üÊ¾Àı´úÂë
+## å…³é”®ç¤ºä¾‹ä»£ç 
 
-* Ö÷³ÌĞò£ºSample
+* ä¸»ç¨‹åºï¼šSample
 
 ```C#
     public partial class MainView : Window
@@ -52,7 +52,7 @@
     }
 ```
 
-* Ç¿ÀàĞÍÔªÊı¾İ½Ó¿Ú¼°Ïà¹ØÊµÏÖ
+* å¼ºç±»å‹å…ƒæ•°æ®æ¥å£åŠç›¸å…³å®ç°
 
 ```C#
     public interface IMetadata
@@ -101,7 +101,7 @@
     }
 ```
 
-* ×ÓÄ£¿é 1£ºSample.Plugin1
+* å­æ¨¡å— 1ï¼šSample.Plugin1
 
 ```C#
     [Export(typeof(IView))]
@@ -118,7 +118,7 @@
 ```
 
 
-* ×ÓÄ£¿é 2£ºSample.Plugin2
+* å­æ¨¡å— 2ï¼šSample.Plugin2
 
 ```C#
     [Export(typeof(IView))]
@@ -133,20 +133,20 @@
     }
 ```
 
-# Éæ¼°ÄÚÈİ
+# æ¶‰åŠå†…å®¹
 
 * EMF
-	* ÑÓ³Ù¼ÓÔØ
-	* ÔªÊı¾İ£¨Ç¿ÀàĞÍ£©µ¼³ö
+	* å»¶è¿ŸåŠ è½½
+	* å…ƒæ•°æ®ï¼ˆå¼ºç±»å‹ï¼‰å¯¼å‡º
 * MVVM
-* Ä£¿éÍ¨ĞÅ
-* ÑùÊ½¹²Ïí
+* æ¨¡å—é€šä¿¡
+* æ ·å¼å…±äº«
 
-# ²Î¿¼£º
+# å‚è€ƒï¼š
 
 * [Managed Extensibility Framework (MEF)](https://docs.microsoft.com/zh-cn/dotnet/framework/mef/index)
-* [Building Hello MEF ¨C Part II ¨C Metadata and why being Lazy is a good thing.](https://blogs.msdn.microsoft.com/gblock/2009/12/04/building-hello-mef-part-ii-metadata-and-why-being-lazy-is-a-good-thing/)
-* [¡¾WPF¡¿ÔËÓÃMEFÊµÏÖ´°¿ÚµÄ¶¯Ì¬À©Õ¹](https://www.cnblogs.com/tcjiaan/p/5844619.html)
-* [ÊµÕ½MEF£¨5£©£ºµ¼³öÔªÊı¾İ](https://www.cnblogs.com/tcjiaan/p/3324552.html)
-* [Ò»¸ö»ùÓÚMEFµÄ¿ÉÍØÕ¹µÄWPF Host³ÌĞò](https://blog.csdn.net/zhaowei303/article/details/38071751)
-* [MEF ±à³ÌÖ¸ÄÏ£¨Áù£©£ºµ¼³öºÍÔªÊı¾İ](https://www.cnblogs.com/JavCof/p/3679224.html)
+* [Building Hello MEF â€“ Part II â€“ Metadata and why being Lazy is a good thing.](https://blogs.msdn.microsoft.com/gblock/2009/12/04/building-hello-mef-part-ii-metadata-and-why-being-lazy-is-a-good-thing/)
+* [ã€WPFã€‘è¿ç”¨MEFå®ç°çª—å£çš„åŠ¨æ€æ‰©å±•](https://www.cnblogs.com/tcjiaan/p/5844619.html)
+* [å®æˆ˜MEFï¼ˆ5ï¼‰ï¼šå¯¼å‡ºå…ƒæ•°æ®](https://www.cnblogs.com/tcjiaan/p/3324552.html)
+* [ä¸€ä¸ªåŸºäºMEFçš„å¯æ‹“å±•çš„WPF Hostç¨‹åº](https://blog.csdn.net/zhaowei303/article/details/38071751)
+* [MEF ç¼–ç¨‹æŒ‡å—ï¼ˆå…­ï¼‰ï¼šå¯¼å‡ºå’Œå…ƒæ•°æ®](https://www.cnblogs.com/JavCof/p/3679224.html)
