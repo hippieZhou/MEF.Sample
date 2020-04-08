@@ -3,13 +3,14 @@ using Prism.Commands;
 using Prism.Mvvm;
 using System.Windows.Input;
 using System;
+using Prism.Logging;
 
 namespace BlankApp.ViewModels
 {
 	public class LoginDialogViewModel: BindableBase
     {
 		private readonly IIdentityManager _identityManager;
-
+		private readonly ILoggerFacade _logger;
 		private bool? _dialogResult;
 		public bool? DialogResult
 		{
@@ -25,9 +26,12 @@ namespace BlankApp.ViewModels
 		}
 
 
-		public LoginDialogViewModel(IIdentityManager identityManager)
+		public LoginDialogViewModel(
+			IIdentityManager identityManager,
+			 ILoggerFacade logger)
 		{
 			_identityManager = identityManager ?? throw new ArgumentNullException(nameof(identityManager));
+			_logger = logger ?? throw new ArgumentNullException(nameof(logger));
 		}
 
 		private ICommand _loginCommand;
@@ -42,6 +46,7 @@ namespace BlankApp.ViewModels
 						var ok = _identityManager.Login("admin", "password");
 						if (ok)
 						{
+							_logger.Log("登录成功", Category.Debug, Priority.High);
 							DialogResult = true;
 						}
 						else

@@ -21,20 +21,26 @@
             <RowDefinition Height="120" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Menu Grid.Row="0">
-            <MenuItem
-                Command="{Binding MenuCommand}"
-                CommandParameter="ModuleAModule"
-                Header="打开模块A" />
-            <MenuItem
-                Command="{Binding MenuCommand}"
-                CommandParameter="SubView"
-                Header="打开 SubView" />
-            <MenuItem
-                Command="{Binding MenuCommand}"
-                CommandParameter="ModuleBModule"
-                Header="打开模块B" />
-        </Menu>
+        <ItemsControl Grid.Row="0" ItemsSource="{Binding Modules}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.Template>
+                <ControlTemplate>
+                    <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                </ControlTemplate>
+            </ItemsControl.Template>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <MenuItem
+                        Command="{Binding Path=DataContext.SwitchModuleCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
+                        CommandParameter="{Binding ModuleName}"
+                        Header="{Binding ModuleName}" />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
         <ContentControl Grid.Row="1" prism:RegionManager.RegionName="{x:Static contracts:RegionContracts.TopContentRegion}" />
         <ContentControl Grid.Row="2" prism:RegionManager.RegionName="{x:Static contracts:RegionContracts.MainContentRegion}" />
     </Grid>

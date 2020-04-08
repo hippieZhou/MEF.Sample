@@ -5,12 +5,14 @@ using System.Windows.Input;
 using System;
 using Prism.Regions;
 using BlankApp.Doamin.Contracts;
-using System.Diagnostics;
+using Prism.Logging;
+using System.Collections.ObjectModel;
 
 namespace BlankApp.ViewModels
 {
     public class MainWindowViewModel : BindableBase
     {
+        private readonly ILoggerFacade _logger;
         private readonly IModuleCatalog _moduleCatalog;
         private readonly IRegionManager _regionManager;
         private readonly IModuleManager _moduleManager;
@@ -22,14 +24,23 @@ namespace BlankApp.ViewModels
             set { SetProperty(ref _title, value); }
         }
 
+        private ObservableCollection<IModuleInfo> _modules;
+        public ObservableCollection<IModuleInfo> Modules
+        {
+            get { return _modules ?? (_modules = new ObservableCollection<IModuleInfo>()); }
+            set { SetProperty(ref _modules, value); }
+        }
+
         public MainWindowViewModel(
             IRegionManager regionManager,
             IModuleCatalog moduleCatalog,
-            IModuleManager moduleManager)
+            IModuleManager moduleManager,
+            ILoggerFacade logger)
         {
             _moduleCatalog = moduleCatalog ?? throw new ArgumentNullException(nameof(moduleCatalog));
             _regionManager = regionManager ?? throw new ArgumentNullException(nameof(regionManager));
             _moduleManager = moduleManager ?? throw new ArgumentNullException(nameof(moduleManager));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         private ICommand _loadCommand;
@@ -41,6 +52,14 @@ namespace BlankApp.ViewModels
                 {
                     _loadCommand = new DelegateCommand(() =>
                     {
+                        Modules.Clear();
+
+                        _moduleManager.LoadModuleCompleted += (sender, e) =>
+                        {
+                            Modules.Add(e.ModuleInfo);
+                            _logger.Log(string.Format("{0} 加载完毕", e.ModuleInfo.ModuleName), Category.Debug, Priority.High);
+                        };
+
                         #region 加载模块
                         foreach (var module in _moduleCatalog.Modules)
                         {
@@ -53,21 +72,25 @@ namespace BlankApp.ViewModels
                             }
                         }
                         #endregion
-
                     });
                 }
                 return _loadCommand;
             }
         }
 
-        private ICommand _menuCommand;
-        public ICommand MenuCommand
+        private void _moduleManager_LoadModuleCompleted(object sender, LoadModuleCompletedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private ICommand _switchModuleCommand;
+        public ICommand SwitchModuleCommand
         {
             get
             {
-                if (_menuCommand == null)
+                if (_switchModuleCommand == null)
                 {
-                    _menuCommand = new DelegateCommand<string>(viewName =>
+                    _switchModuleCommand = new DelegateCommand<string>(viewName =>
                     {
                         #region 页面导航
                         var parameters = new NavigationParameters();
@@ -75,12 +98,12 @@ namespace BlankApp.ViewModels
 
                         _regionManager.RequestNavigate(RegionContracts.MainContentRegion, viewName, result =>
                         {
-                            Trace.WriteLine(string.Format("Navigation to {0}.{1}.{2} complete. ", viewName, result.Result, result.Context.Uri));
+                            _logger.Log(string.Format("Navigation to {0}.{1}.{2} complete. ", viewName, result.Result, result.Context.Uri), Category.Debug, Priority.High);
                         }, parameters);
                         #endregion
                     });
                 }
-                return _menuCommand;
+                return _switchModuleCommand;
             }
         }
     }

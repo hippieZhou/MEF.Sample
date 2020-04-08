@@ -8,8 +8,7 @@ namespace BlankApp.Modules.ModuleA.ViewModels
 {
     public class SubViewModel : BindableBase
     {
-        private string _message;
-
+        private string _message = "我是来自 ModuleA 中的次界面";
         public string Message
         {
             get { return _message; }
@@ -20,7 +19,6 @@ namespace BlankApp.Modules.ModuleA.ViewModels
 
         public SubViewModel(IRegionManager regionManager)
         {
-            Message = "我是来自 ModuleA 中的次界面";
             _regionManager = regionManager ?? throw new ArgumentNullException(nameof(regionManager));
         }
 
