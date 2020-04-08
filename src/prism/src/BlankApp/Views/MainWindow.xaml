@@ -1,0 +1,41 @@
+﻿<Window
+    x:Class="BlankApp.Views.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:contracts="clr-namespace:BlankApp.Doamin.Contracts;assembly=BlankApp.Doamin"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:prism="http://prismlibrary.com/"
+    Title="{Binding Title}"
+    Width="800"
+    Height="520"
+    prism:ViewModelLocator.AutoWireViewModel="True"
+    WindowStartupLocation="CenterScreen">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="120" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Menu Grid.Row="0">
+            <MenuItem
+                Command="{Binding MenuCommand}"
+                CommandParameter="ModuleAModule"
+                Header="打开模块A" />
+            <MenuItem
+                Command="{Binding MenuCommand}"
+                CommandParameter="SubView"
+                Header="打开 SubView" />
+            <MenuItem
+                Command="{Binding MenuCommand}"
+                CommandParameter="ModuleBModule"
+                Header="打开模块B" />
+        </Menu>
+        <ContentControl Grid.Row="1" prism:RegionManager.RegionName="{x:Static contracts:RegionContracts.TopContentRegion}" />
+        <ContentControl Grid.Row="2" prism:RegionManager.RegionName="{x:Static contracts:RegionContracts.MainContentRegion}" />
+    </Grid>
+</Window>
