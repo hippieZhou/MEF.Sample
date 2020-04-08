@@ -20,7 +20,7 @@ namespace BlankApp.Infrastructure.Context
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
 
-        public IQueryable<TEntity> Table => throw new NotImplementedException();
+        public IQueryable<TEntity> Table => _dbContext.DbSet<TEntity>();
 
         public Task AddAsync(TEntity entity)
         {

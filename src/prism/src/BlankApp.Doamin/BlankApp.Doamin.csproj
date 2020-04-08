@@ -45,6 +45,7 @@
     <Compile Include="Context\IUnitOfWork.cs" />
     <Compile Include="Contracts\RegionContracts.cs" />
     <Compile Include="Entities\AuditableEntity.cs" />
+    <Compile Include="Entities\Person.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

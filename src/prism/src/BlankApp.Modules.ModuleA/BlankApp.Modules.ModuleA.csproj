@@ -66,11 +66,19 @@
     </Compile>
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\SubViewModel.cs" />
+    <Compile Include="ViewModels\ViewAViewModel.cs" />
+    <Compile Include="ViewModels\ViewBViewModel.cs" />
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SubView.xaml.cs">
       <DependentUpon>SubView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewA.xaml.cs">
+      <DependentUpon>ViewA.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewB.xaml.cs">
+      <DependentUpon>ViewB.xaml</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -88,6 +96,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SubView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewA.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewB.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -4,5 +4,6 @@
     {
         public const string TopContentRegion = "TopContentRegion";
         public const string MainContentRegion = "MainContentRegion";
+        public const string ChildContentRegion = "ChildContentRegion";
     }
 }

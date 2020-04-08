@@ -55,9 +55,7 @@
     <Compile Include="Identity\IIdentityManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Logging\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\BlankApp.Doamin\BlankApp.Doamin.csproj">
       <Project>{D7DD19BC-2216-4B4B-B0CC-7821177730CB}</Project>

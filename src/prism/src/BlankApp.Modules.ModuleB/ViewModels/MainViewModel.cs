@@ -1,10 +1,15 @@
-﻿using BlankApp.Infrastructure.Event;
+﻿using BlankApp.Doamin.Context;
+using BlankApp.Doamin.Entities;
+using BlankApp.Infrastructure.Event;
+using BlankApp.Modules.ModuleB.Models;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 using Prism.Regions;
 using System;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Windows.Input;
 
 namespace BlankApp.Modules.ModuleB.ViewModels
@@ -14,23 +19,34 @@ namespace BlankApp.Modules.ModuleB.ViewModels
     /// </summary>
     public class MainViewModel : BindableBase, INavigationAware
     {
+        private readonly IAsyncRepository<Person> _asyncRepository;
         private readonly IEventAggregator _eventAggregator;
         private IRegionNavigationJournal _journal;
 
-        private string _message = "我是来自 ModuleB 中的主界面";
-        public string Message
+        public MainViewModel(
+            IAsyncRepository<Person> asyncRepository,
+            IEventAggregator eventAggregator)
         {
-            get { return _message; }
-            set { SetProperty(ref _message, value); }
-        }
-
-        public MainViewModel(IEventAggregator eventAggregator)
-        {
+            _asyncRepository = asyncRepository ?? throw new ArgumentNullException(nameof(asyncRepository));
             _eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             _eventAggregator.GetEvent<MessageSentEvent>().Subscribe(message =>
             {
-                Message = message;
+                QueryString = message;
             });
+        }
+
+        private string _queryString = "我是来自 ModuleB 中的主界面";
+        public string QueryString
+        {
+            get { return _queryString; }
+            set { SetProperty(ref _queryString, value); }
+        }
+
+        private ObservableCollection<PersonDto> _persons;
+        public ObservableCollection<PersonDto> Persons
+        {
+            get { return _persons ?? (_persons = new ObservableCollection<PersonDto>()); }
+            set { SetProperty(ref _persons, value); }
         }
 
         private ICommand _backCommand;
@@ -52,18 +68,42 @@ namespace BlankApp.Modules.ModuleB.ViewModels
             }
         }
 
+        private ICommand _searchCommand;
+        public ICommand SearchCommand
+        {
+            get
+            {
+                if (_searchCommand == null)
+                {
+                    _searchCommand = new DelegateCommand(() =>
+                    {
+                        var persons = _asyncRepository.Table.Where(x => x.Name.Contains(QueryString));
+                        if (persons.Any())
+                        {
+                            Persons.Clear();
+                            foreach (var person in persons)
+                            {
+                                Persons.Add(new PersonDto { Name = person.Name });
+                            }
+                        }
+                    });
+                }
+                return _searchCommand;
+            }
+        }
+
         public void OnNavigatedTo(NavigationContext navigationContext)
         {
             _journal = navigationContext.NavigationService.Journal;
             //页面跳转成功之后获取参数
             Trace.WriteLine("页面进入");
-            Message ="我是模块B，传给我的参数为：" +  navigationContext.Parameters.GetValue<string>(nameof(Message));
+            QueryString ="我是模块B，传给我的参数为：" +  navigationContext.Parameters.GetValue<string>(nameof(QueryString));
         }
 
         public bool IsNavigationTarget(NavigationContext navigationContext)
         {
             //是否允许跳转到此页面
-            return navigationContext.Parameters.ContainsKey(nameof(Message));
+            return navigationContext.Parameters.ContainsKey(nameof(QueryString));
         }
 
         public void OnNavigatedFrom(NavigationContext navigationContext)
