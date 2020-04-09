@@ -8,7 +8,7 @@
 
 改示例框架是基于 **.NET Framework** 来进行开发的，Prism 版本可以自由选择，单需要确保整个项目的版本保存一致。
 
-为了提高开发消息，统一编码分隔，团队开发人员请安装如下 Visual Studio 插件
+为了提高开发消息，统一编码风格，团队开发人员请安装如下 Visual Studio 插件
 
 - [Prism Template Pack](https://github.com/PrismLibrary/Prism)
 - [XamlStyler](https://github.com/Xavalon/XamlStyler/)
