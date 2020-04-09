@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace BlankApp.Infrastructure.Context
 {
@@ -29,11 +30,18 @@ namespace BlankApp.Infrastructure.Context
 
         public IQueryable<TEntity> DbSet<TEntity>() where TEntity : AuditableEntity
         {
-            if (typeof(TEntity) == typeof(Person))
+            IQueryable<TEntity> entities = default;
+
+            var properties = GetType().GetProperties();
+            foreach (var prop in properties)
             {
-                return Persons as IQueryable<TEntity>;
+                var genericType = prop.PropertyType.GenericTypeArguments.FirstOrDefault();
+                if (genericType == typeof(TEntity))
+                {
+                    entities = prop.GetValue(this) as IQueryable<TEntity>;
+                }
             }
-            return default;
+            return entities;
         }
 
         public IQueryable<Person> Persons { get; set; } 

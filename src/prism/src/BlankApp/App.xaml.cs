@@ -27,7 +27,11 @@ namespace BlankApp
 #endif
                 .Enrich.FromLogContext()
                 .WriteTo.Debug()
-                .WriteTo.File(path: Path.Combine("Logs", "log.txt"), encoding: Encoding.UTF8, restrictedToMinimumLevel: LogEventLevel.Warning)
+                .WriteTo.File(
+                path: Path.Combine("Logs", "log.txt"),
+                encoding: Encoding.UTF8,
+                rollingInterval: RollingInterval.Day,
+                restrictedToMinimumLevel: LogEventLevel.Warning)
                 .CreateLogger();
 
             Log.Information("系统已启动。");
@@ -67,12 +71,13 @@ namespace BlankApp
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            //注入 Serilog 日志系统
+            containerRegistry.RegisterSerilog();
+
             //注册基础设施
             containerRegistry.AddInfrastructure();
             //注册横切面
             containerRegistry.AddCrossCutting();
-            //注入 Serilog 日志系统
-            containerRegistry.RegisterSerilog();
         }
 
         protected override IModuleCatalog CreateModuleCatalog()
