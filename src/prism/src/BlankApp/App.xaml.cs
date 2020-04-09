@@ -73,7 +73,6 @@ namespace BlankApp
         {
             //注入 Serilog 日志系统
             containerRegistry.RegisterSerilog();
-
             //注册基础设施
             containerRegistry.AddInfrastructure();
             //注册横切面

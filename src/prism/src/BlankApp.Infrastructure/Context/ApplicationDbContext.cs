@@ -25,9 +25,9 @@ namespace BlankApp.Infrastructure.Context
             var properties = GetType().GetProperties();
             foreach (var prop in properties)
             {
-                var genericType = prop.PropertyType.GenericTypeArguments.FirstOrDefault();
-                _loggerFacade.Log($"{genericType}:{typeof(TEntity)}", Category.Debug, Priority.None);
-                if (genericType == typeof(TEntity))
+                var genericType = prop.PropertyType.GenericTypeArguments.FirstOrDefault(x => x == typeof(TEntity));
+                _loggerFacade.Log($"{genericType}", Category.Debug, Priority.None);
+                if (genericType != null)
                 {
                     entities = prop.GetValue(this) as IQueryable<TEntity>;
                 }
