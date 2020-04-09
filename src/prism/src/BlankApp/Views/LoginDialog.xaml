@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
     xmlns:local="clr-namespace:BlankApp.Views"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
     Title="用户登录"
@@ -13,8 +14,15 @@
     local:LoginDialog.DialogResult="{Binding DialogResult}"
     prism:ViewModelLocator.AutoWireViewModel="True"
     AllowsTransparency="True"
-    ResizeMode="NoResize"
+    Background="{DynamicResource MaterialDesignPaper}"
+    FontFamily="{DynamicResource MaterialDesignFont}"
+    TextElement.FontSize="14"
+    TextElement.FontWeight="Regular"
+    TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+    TextOptions.TextFormattingMode="Ideal"
+    TextOptions.TextRenderingMode="Auto"
     WindowStartupLocation="CenterScreen"
+    WindowState="Normal"
     WindowStyle="None"
     mc:Ignorable="d">
     <i:Interaction.Triggers>
@@ -22,20 +30,19 @@
             <i:InvokeCommandAction Command="{Binding LoadCommand}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
-    <Grid>
+    <materialDesign:Card Background="{StaticResource MaterialDesignLightBackground}">
         <StackPanel
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             Orientation="Horizontal">
-            <StackPanel.Resources>
-                <Style TargetType="Button">
-                    <Setter Property="Width" Value="64" />
-                    <Setter Property="Height" Value="32" />
-                    <Setter Property="Margin" Value="12" />
-                </Style>
-            </StackPanel.Resources>
-            <Button Command="{Binding LoginCommand}" Content="登录" />
-            <Button Command="{Binding ExitCommand}" Content="退出" />
+            <Button
+                Margin="24,12"
+                Command="{Binding LoginCommand}"
+                Content="登录" />
+            <Button
+                Margin="24,12"
+                Command="{Binding ExitCommand}"
+                Content="退出" />
         </StackPanel>
-    </Grid>
+    </materialDesign:Card>
 </Window>

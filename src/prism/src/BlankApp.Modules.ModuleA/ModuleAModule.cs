@@ -24,6 +24,7 @@ namespace BlankApp.Modules.ModuleA
         {
             //如果页面需要导航的话可以使用如下方式进行页面注册（参数用于标识页面名称，需要做到全局唯一，不能重复）
             containerRegistry.RegisterForNavigation<MainView>(nameof(ModuleAModule));
+            containerRegistry.RegisterForNavigation<MainView>(nameof(SubView));
         }
     }
 }
