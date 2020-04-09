@@ -78,11 +78,6 @@ namespace BlankApp.ViewModels
             }
         }
 
-        private void _moduleManager_LoadModuleCompleted(object sender, LoadModuleCompletedEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
         private ICommand _switchModuleCommand;
         public ICommand SwitchModuleCommand
         {

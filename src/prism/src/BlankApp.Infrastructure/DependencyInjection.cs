@@ -8,7 +8,7 @@ namespace BlankApp.Infrastructure
     {
         public static IContainerRegistry AddInfrastructure(this IContainerRegistry containerRegistry)
         {
-            containerRegistry.Register<ApplicationDbContext>();
+            containerRegistry.RegisterSingleton<ApplicationDbContext>();
             containerRegistry.Register(typeof(IAsyncRepository<>), typeof(AsyncRepository<>));
             containerRegistry.Register<IUnitOfWork, UnitOfWork>();
             return containerRegistry;

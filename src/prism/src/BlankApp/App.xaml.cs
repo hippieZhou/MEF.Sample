@@ -59,11 +59,11 @@ namespace BlankApp
         protected override void InitializeShell(Window shell)
         {
             #region 登录窗口
-            //var login = new LoginDialog();
-            //if (!login.ShowDialog().GetValueOrDefault())
-            //{
-            //    Environment.Exit(0);
-            //}
+            var login = new LoginDialog();
+            if (!login.ShowDialog().GetValueOrDefault())
+            {
+                Environment.Exit(0);
+            }
             #endregion
 
             base.InitializeShell(shell);

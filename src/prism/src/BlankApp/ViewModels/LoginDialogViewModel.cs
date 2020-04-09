@@ -4,11 +4,13 @@ using Prism.Mvvm;
 using System.Windows.Input;
 using System;
 using Prism.Logging;
+using BlankApp.Infrastructure.Context;
 
 namespace BlankApp.ViewModels
 {
 	public class LoginDialogViewModel: BindableBase
     {
+		private readonly ApplicationDbContext _dbContext;
 		private readonly IIdentityManager _identityManager;
 		private readonly ILoggerFacade _logger;
 		private bool? _dialogResult;
@@ -25,13 +27,30 @@ namespace BlankApp.ViewModels
 			set { SetProperty(ref _message, value); }
 		}
 
-
 		public LoginDialogViewModel(
+			ApplicationDbContext dbContext,
 			IIdentityManager identityManager,
-			 ILoggerFacade logger)
+			ILoggerFacade logger)
 		{
+			_dbContext = dbContext ?? throw new ArgumentNullException(nameof(identityManager));
 			_identityManager = identityManager ?? throw new ArgumentNullException(nameof(identityManager));
 			_logger = logger ?? throw new ArgumentNullException(nameof(logger));
+		}
+
+		private ICommand _loadCommand;
+		public ICommand LoadCommand
+		{
+			get
+			{
+				if (_loadCommand == null)
+				{
+					_loadCommand = new DelegateCommand(async () =>
+					{
+						await ApplicationDbInitializer.SeedAsync(_dbContext);
+					});
+				}
+				return _loadCommand;
+			}
 		}
 
 		private ICommand _loginCommand;
