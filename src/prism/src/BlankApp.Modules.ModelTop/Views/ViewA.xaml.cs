@@ -3,11 +3,11 @@
 namespace BlankApp.Modules.ModelTop.Views
 {
     /// <summary>
-    /// Interaction logic for ViewA.xaml
+    /// Interaction logic for ViewA
     /// </summary>
-    public partial class MainView : UserControl
+    public partial class ViewA : UserControl
     {
-        public MainView()
+        public ViewA()
         {
             InitializeComponent();
         }

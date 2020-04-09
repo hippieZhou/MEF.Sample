@@ -29,7 +29,7 @@
             <RowDefinition Height="120" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <ItemsControl Grid.Row="0" ItemsSource="{Binding Modules}">
+        <ItemsControl Grid.Row="0" ItemsSource="{Binding PrimaryMenu}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <VirtualizingStackPanel Orientation="Horizontal" />
@@ -43,9 +43,9 @@
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <MenuItem
-                        Command="{Binding Path=DataContext.SwitchModuleCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
-                        CommandParameter="{Binding ModuleName}"
-                        Header="{Binding ModuleName}" />
+                        Command="{Binding Path=DataContext.SwitchMenuCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
+                        CommandParameter="{Binding}"
+                        Header="{Binding Header}" />
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>

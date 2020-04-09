@@ -1,0 +1,16 @@
+﻿<UserControl
+    x:Class="BlankApp.Modules.ModelTop.Views.ViewB"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:prism="http://prismlibrary.com/"
+    prism:ViewModelLocator.AutoWireViewModel="True">
+    <Grid>
+        <StackPanel>
+            <Button
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Content="我是 B 页面" />
+            <Button Command="{Binding NavigationCommand}" Content="我想打开我对应模块的主页面" />
+        </StackPanel>
+    </Grid>
+</UserControl>

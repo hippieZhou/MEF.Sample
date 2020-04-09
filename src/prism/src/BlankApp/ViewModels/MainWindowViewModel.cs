@@ -7,21 +7,35 @@ using Prism.Regions;
 using BlankApp.Doamin.Contracts;
 using Prism.Logging;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows.Controls;
 
 namespace BlankApp.ViewModels
 {
+    public class Menu
+    {
+        public string Header { get; set; }
+        public UserControl View { get; set; }
+    }
     public class MainWindowViewModel : BindableBase
     {
-        private readonly ILoggerFacade _logger;
         private readonly IModuleCatalog _moduleCatalog;
         private readonly IRegionManager _regionManager;
         private readonly IModuleManager _moduleManager;
+        private readonly ILoggerFacade _logger;
 
         private string _title = "Prism Application";
         public string Title
         {
             get { return _title; }
             set { SetProperty(ref _title, value); }
+        }
+
+        private ObservableCollection<Menu> _primaryMenus;
+        public ObservableCollection<Menu> PrimaryMenu
+        {
+            get { return _primaryMenus ?? (_primaryMenus = new ObservableCollection<Menu>()); }
+            set { SetProperty(ref _primaryMenus, value); }
         }
 
         private ObservableCollection<IModuleInfo> _modules;
@@ -53,12 +67,13 @@ namespace BlankApp.ViewModels
                     _loadCommand = new DelegateCommand(() =>
                     {
                         Modules.Clear();
-
                         _moduleManager.LoadModuleCompleted += (sender, e) =>
                         {
                             Modules.Add(e.ModuleInfo);
                             _logger.Log(string.Format("{0} 加载完毕", e.ModuleInfo.ModuleName), Category.Debug, Priority.High);
                         };
+
+                     
 
                         #region 加载模块
                         foreach (var module in _moduleCatalog.Modules)
@@ -72,33 +87,37 @@ namespace BlankApp.ViewModels
                             }
                         }
                         #endregion
+
+                        PrimaryMenu.Clear();
+                        var items = _regionManager.Regions[RegionContracts.TopContentRegion].Views.Cast<UserControl>();
+                        foreach (var item in items)
+                        {
+                            PrimaryMenu.Add(new Menu
+                            {
+                                //此处到时候需要通过附加属性的方式来获取菜单名称
+                                Header = Guid.NewGuid().ToString("N"),
+                                View = item
+                            });
+                        }
                     });
                 }
                 return _loadCommand;
             }
         }
 
-        private ICommand _switchModuleCommand;
-        public ICommand SwitchModuleCommand
+        private ICommand _switchMenuCommand;
+        public ICommand SwitchMenuCommand
         {
             get
             {
-                if (_switchModuleCommand == null)
+                if (_switchMenuCommand == null)
                 {
-                    _switchModuleCommand = new DelegateCommand<string>(viewName =>
+                    _switchMenuCommand = new DelegateCommand<Menu>(menu =>
                     {
-                        #region 页面导航
-                        var parameters = new NavigationParameters();
-                        parameters.Add("Message", "我是来自页面导航的参数");
-
-                        _regionManager.RequestNavigate(RegionContracts.MainContentRegion, viewName, result =>
-                        {
-                            _logger.Log(string.Format("Navigation to {0}.{1}.{2} complete. ", viewName, result.Result, result.Context.Uri), Category.Debug, Priority.High);
-                        }, parameters);
-                        #endregion
+                        _regionManager.Regions[RegionContracts.TopContentRegion].Activate(menu.View);
                     });
                 }
-                return _switchModuleCommand;
+                return _switchMenuCommand;
             }
         }
     }

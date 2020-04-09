@@ -7,6 +7,7 @@ using System;
 
 namespace BlankApp.Modules.ModelTop
 {
+    [Module(OnDemand = true)]
     public class ModelTopModule : IModule
     {
         private readonly IRegionManager _regionManager;
@@ -23,7 +24,9 @@ namespace BlankApp.Modules.ModelTop
         public void OnInitialized(IContainerProvider containerProvider)
         {
             // 如果页面不需要导航的话可以使用如下方式进行页面注册
-            _regionManager.RegisterViewWithRegion(RegionContracts.TopContentRegion, typeof(MainView));
+            //_regionManager.RegisterViewWithRegion(RegionContracts.TopContentRegion, typeof(MainView));
+            _regionManager.RegisterViewWithRegion(RegionContracts.TopContentRegion, typeof(ViewA));
+            _regionManager.RegisterViewWithRegion(RegionContracts.TopContentRegion, typeof(ViewB));
         }
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
