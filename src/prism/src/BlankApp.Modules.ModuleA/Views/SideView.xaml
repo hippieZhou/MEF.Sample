@@ -5,9 +5,9 @@
     xmlns:prism="http://prismlibrary.com/"
     prism:ViewModelLocator.AutoWireViewModel="True">
     <Grid>
-        <TextBlock
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            Text="我是 ModuleA 的侧边栏" />
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock Text="我是 ModuleA 的侧边栏" Visibility="{Binding Visibility}" />
+            <Button Command="{Binding AuthCommand}" Content="权限测试" />
+        </StackPanel>
     </Grid>
 </UserControl>

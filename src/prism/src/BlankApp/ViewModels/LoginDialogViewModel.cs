@@ -5,6 +5,8 @@ using System.Windows.Input;
 using System;
 using Prism.Logging;
 using BlankApp.Infrastructure.Context;
+using System.Linq;
+using BlankApp.Infrastructure.Identity.Entities;
 
 namespace BlankApp.ViewModels
 {
@@ -54,16 +56,17 @@ namespace BlankApp.ViewModels
 			}
 		}
 
-		private ICommand _loginCommand;
-		public ICommand LoginCommand
+		private ICommand _adminloginCommand;
+		public ICommand AdminLoginCommand
 		{
 			get
 			{
-				if (_loginCommand == null)
+				if (_adminloginCommand == null)
 				{
-					_loginCommand = new DelegateCommand(() =>
+					_adminloginCommand = new DelegateCommand(() =>
 					{
-						var ok = _identityManager.Login("admin", "password");
+						var admin = _dbContext.Users.FirstOrDefault(x => x.Role == ApplicationRole.Administrator);
+						var ok = _identityManager.Login(admin);
 						if (ok)
 						{
 							_logger.Log("登录成功", Category.Debug, Priority.High);
@@ -75,7 +78,33 @@ namespace BlankApp.ViewModels
 						}
 					});
 				}
-				return _loginCommand;
+				return _adminloginCommand;
+			}
+		}
+
+		private ICommand _userloginCommand;
+		public ICommand UserLoginCommand
+		{
+			get
+			{
+				if (_userloginCommand == null)
+				{
+					_userloginCommand = new DelegateCommand(() =>
+					{
+						var user = _dbContext.Users.FirstOrDefault(x => x.Role == ApplicationRole.User);
+						var ok = _identityManager.Login(user);
+						if (ok)
+						{
+							_logger.Log("登录成功", Category.Debug, Priority.High);
+							DialogResult = true;
+						}
+						else
+						{
+							Message = "用户名和密码不匹配, 登录失败";
+						}
+					});
+				}
+				return _userloginCommand;
 			}
 		}
 

@@ -69,7 +69,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Converters\ModuleToHeaderConverter.cs" />
-    <Compile Include="Services\NavigationService.cs" />
     <Compile Include="Services\ModuleService.cs" />
     <Compile Include="ViewModels\BusinessViewModel.cs" />
     <Compile Include="ViewModels\LoginDialogViewModel.cs" />

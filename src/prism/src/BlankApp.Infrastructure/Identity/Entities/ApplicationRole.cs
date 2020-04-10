@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BlankApp.Doamin.Services
+namespace BlankApp.Infrastructure.Identity.Entities
 {
-    public interface INavigationService
+    [Flags]
+    public enum ApplicationRole
     {
-        void NavigateTo(string regionName, string viewName);
+        Administrator,
+        User
     }
 }

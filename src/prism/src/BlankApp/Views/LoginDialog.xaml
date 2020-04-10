@@ -9,7 +9,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
     Title="用户登录"
-    Width="400"
+    Width="520"
     Height="200"
     extension:WindowExtension.DialogResult="{Binding DialogResult}"
     prism:ViewModelLocator.AutoWireViewModel="True"
@@ -20,7 +20,7 @@
     mc:Ignorable="d">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
-            <i:InvokeCommandAction Command="{Binding LoadCommand}" />
+            <i:InvokeCommandAction Command="{Binding LoadedCommand}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
     <Grid Background="LightSkyBlue">
@@ -35,7 +35,8 @@
                     <Setter Property="Margin" Value="24,12" />
                 </Style>
             </StackPanel.Resources>
-            <Button Command="{Binding LoginCommand}" Content="登录" />
+            <Button Command="{Binding AdminLoginCommand}" Content="管理员登录" />
+            <Button Command="{Binding UserLoginCommand}" Content="普通用户登录" />
             <Button Command="{Binding ExitCommand}" Content="退出" />
         </StackPanel>
     </Grid>

@@ -19,18 +19,10 @@ namespace BlankApp.Modules.ModuleB.ViewModels
     public class MainViewModel : BindableBase
     {
         private readonly IAsyncRepository<Person> _asyncRepository;
-        private readonly IEventAggregator _eventAggregator;
 
-        public MainViewModel(
-            IAsyncRepository<Person> asyncRepository,
-            IEventAggregator eventAggregator)
+        public MainViewModel(IAsyncRepository<Person> asyncRepository)
         {
             _asyncRepository = asyncRepository ?? throw new ArgumentNullException(nameof(asyncRepository));
-            _eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
-            _eventAggregator.GetEvent<MessageSentEvent>().Subscribe(message =>
-            {
-                QueryString = message;
-            });
         }
 
         private string _queryString = "我是来自 ModuleB 中的主界面";

@@ -1,8 +1,10 @@
-﻿namespace BlankApp.Infrastructure.Identity
+﻿using BlankApp.Infrastructure.Identity.Entities;
+
+namespace BlankApp.Infrastructure.Identity
 {
     public interface IIdentityManager
     {
-        object CurrentUser { get; }
-        bool Login(string userName, string password);
+        ApplicationUser CurrentUser { get; }
+        bool Login(ApplicationUser user);
     }
 }

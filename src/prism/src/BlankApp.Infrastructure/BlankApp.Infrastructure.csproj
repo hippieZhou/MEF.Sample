@@ -53,6 +53,8 @@
     <Compile Include="Context\AsyncRepository.cs" />
     <Compile Include="Context\UnitOfWork.cs" />
     <Compile Include="DependencyInjection.cs" />
+    <Compile Include="Identity\Entities\ApplicationRole.cs" />
+    <Compile Include="Identity\Entities\ApplicationUser.cs" />
     <Compile Include="Identity\IIdentityManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

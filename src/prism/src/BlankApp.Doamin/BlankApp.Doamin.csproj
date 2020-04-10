@@ -61,7 +61,6 @@
     <Compile Include="Extensions\AttributeExtensions.cs" />
     <Compile Include="Modularity\BusinessModuleAttribute.cs" />
     <Compile Include="Services\IModuleService.cs" />
-    <Compile Include="Services\INavigationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

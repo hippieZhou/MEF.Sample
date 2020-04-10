@@ -11,6 +11,7 @@ using BlankApp.Doamin.Services;
 using BlankApp.Doamin.Contracts;
 using Prism.Regions;
 using System.Windows.Controls;
+using BlankApp.Infrastructure.Identity;
 
 namespace BlankApp.ViewModels
 {
@@ -19,7 +20,7 @@ namespace BlankApp.ViewModels
         private readonly IModuleService _moduleService;
         private readonly IModuleManager _moduleManager;
         private readonly IRegionManager _regionManager;
-
+        private readonly IIdentityManager _identityManager;
         private string _title = "Prism Application";
         public string Title
         {
@@ -44,11 +45,13 @@ namespace BlankApp.ViewModels
         public MainWindowViewModel(
             IModuleService moduleService,
             IModuleManager moduleManager,
-            IRegionManager regionManager)
+            IRegionManager regionManager,
+            IIdentityManager identityManager)
         {
             _moduleService = moduleService ?? throw new ArgumentNullException(nameof(moduleService));
             _moduleManager = moduleManager ?? throw new ArgumentNullException(nameof(moduleManager));
             _regionManager = regionManager ?? throw new ArgumentNullException(nameof(regionManager));
+            _identityManager = identityManager ?? throw new ArgumentNullException(nameof(identityManager));
         }
 
         private ICommand _loadedCommand;
@@ -69,6 +72,8 @@ namespace BlankApp.ViewModels
                         RaisePropertyChanged(nameof(Modules));
 
                         #endregion
+
+                        Title = $"{_identityManager.CurrentUser.UserName}，欢迎回来";
                     });
                 }
                 return _loadedCommand;

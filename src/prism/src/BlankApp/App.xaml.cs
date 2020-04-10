@@ -75,7 +75,6 @@ namespace BlankApp
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterSingleton<IModuleService, ModuleService>();
-            containerRegistry.RegisterSingleton<INavigationService, NavigationService>();
 
             //注入 Serilog 日志系统
             containerRegistry.RegisterSerilog();

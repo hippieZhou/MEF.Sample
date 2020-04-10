@@ -1,4 +1,5 @@
 ﻿using BlankApp.Infrastructure.Identity;
+using BlankApp.Infrastructure.Identity.Entities;
 using System;
 
 namespace BlankApp.Infrastructure.CrossCutting.Identity
@@ -8,10 +9,12 @@ namespace BlankApp.Infrastructure.CrossCutting.Identity
     /// </summary>
     public class IdentityManager : IIdentityManager
     {
-        public object CurrentUser => throw new NotImplementedException();
+        private ApplicationUser _user;
+        public ApplicationUser CurrentUser => _user;
 
-        public bool Login(string userName, string password)
+        public bool Login(ApplicationUser user)
         {
+            _user = user;
             return true;
         }
     }
