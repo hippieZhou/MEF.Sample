@@ -6,20 +6,20 @@ using System;
 using System.Collections.ObjectModel;
 using BlankApp.Models;
 using System.Linq;
-using BlankApp.Doamin.Events;
-using BlankApp.Doamin.Bus;
-using Prism.Events;
 using System.Diagnostics;
 using BlankApp.Doamin.Services;
+using BlankApp.Doamin.Contracts;
+using Prism.Regions;
+using System.Windows.Controls;
 
 namespace BlankApp.ViewModels
 {
     public class MainWindowViewModel : BindableBase
     {
-        private readonly IEventBus _bus;
         private readonly IModuleService _moduleService;
         private readonly IModuleManager _moduleManager;
-        private readonly IEventAggregator _eventAggregator;
+        private readonly IRegionManager _regionManager;
+
         private string _title = "Prism Application";
         public string Title
         {
@@ -42,15 +42,13 @@ namespace BlankApp.ViewModels
         }
 
         public MainWindowViewModel(
-            IEventBus bus,
             IModuleService moduleService,
             IModuleManager moduleManager,
-            IEventAggregator eventAggregator)
+            IRegionManager regionManager)
         {
-            _bus = bus ?? throw new ArgumentNullException(nameof(bus));
             _moduleService = moduleService ?? throw new ArgumentNullException(nameof(moduleService));
             _moduleManager = moduleManager ?? throw new ArgumentNullException(nameof(moduleManager));
-            _eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
+            _regionManager = regionManager ?? throw new ArgumentNullException(nameof(regionManager));
         }
 
         private ICommand _loadedCommand;
@@ -112,8 +110,21 @@ namespace BlankApp.ViewModels
                         {
                             _moduleManager.LoadModule(business.Module.ModuleName);
                         }
+
+                        _regionManager.Regions[RegionContracts.SideContentRegion].ActiveViews.Cast<UserControl>().ToList().ForEach(p => 
+                        {
+                            _regionManager.Regions[RegionContracts.SideContentRegion].Deactivate(p);
+                        });
+
+                        var sideView = _regionManager.Regions[RegionContracts.SideContentRegion].Views
+                        .FirstOrDefault(x => string.Equals(x.GetType().Assembly.CodeBase, business.Module.Ref, StringComparison.OrdinalIgnoreCase));
+                        if (sideView != null)
+                        {
+                            _regionManager.Regions[RegionContracts.SideContentRegion].Activate(sideView);
+                        }
+
+                        _regionManager.RequestNavigate(RegionContracts.MainContentRegion, business.Module.ModuleName);
                         Trace.WriteLine(DateTime.Now);
-                        _eventAggregator.GetEvent<ShellSendEvent>().Publish(business.Module.ModuleName);
                     });
                 }
                 return _invokeModuleCommand;

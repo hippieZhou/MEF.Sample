@@ -20,8 +20,6 @@ namespace BlankApp.Infrastructure.Context
 
         public IQueryable<TEntity> DbSet<TEntity>() where TEntity : AuditableEntity
         {
-            IQueryable<TEntity> entities = default;
-
             var properties = GetType().GetProperties();
             foreach (var prop in properties)
             {
@@ -29,11 +27,11 @@ namespace BlankApp.Infrastructure.Context
                 _loggerFacade.Log($"{genericType}", Category.Debug, Priority.None);
                 if (genericType != null)
                 {
-                    entities = prop.GetValue(this) as IQueryable<TEntity>;
+                    return prop.GetValue(this) as IQueryable<TEntity>;
                 }
             }
 
-            return entities;
+            return default;
         }
     }
 }

@@ -40,7 +40,7 @@ namespace BlankApp.Modules.ModuleA.ViewModels
                     {
                         var parameters = new NavigationParameters();
                         parameters.Add("QueryString", DateTime.Now);
-                        _regionManager.RequestNavigate(RegionContracts.MainContentRegion, typeof(ViewA).FullName, result =>
+                        _regionManager.RequestNavigate(RegionContracts.MainContentRegion, nameof(ViewA), result =>
                          {
                              _logger.Log(string.Format("Navigation to {0} complete. ", result.Context.Uri), Category.Debug, Priority.High);
                          }, parameters);

@@ -5,8 +5,7 @@
     /// </summary>
     public class MainMenuContracts
     {
-        public const string A = "A";
-        public const string B = "B";
-        public const string C = "C";
+        public const string A = "菜单1";
+        public const string B = "菜单2";
     }
 }
