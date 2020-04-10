@@ -47,12 +47,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bus\InMemoryBus.cs" />
     <Compile Include="Context\ApplicationDbContext.cs" />
     <Compile Include="Context\ApplicationDbInitializer.cs" />
     <Compile Include="Context\AsyncRepository.cs" />
     <Compile Include="Context\UnitOfWork.cs" />
     <Compile Include="DependencyInjection.cs" />
-    <Compile Include="Event\MessageSentEvent.cs" />
     <Compile Include="Identity\IIdentityManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

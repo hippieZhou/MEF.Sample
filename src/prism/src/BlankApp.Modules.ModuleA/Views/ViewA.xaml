@@ -5,9 +5,12 @@
     xmlns:prism="http://prismlibrary.com/"
     prism:ViewModelLocator.AutoWireViewModel="True">
     <Grid>
-        <TextBlock
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            Text="我是 ModuleA 中的 ViewA 视图" />
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Text="{Binding QueryString}" />
+            <Button Command="{Binding BackCommand}" Content="返回" />
+        </StackPanel>
     </Grid>
 </UserControl>

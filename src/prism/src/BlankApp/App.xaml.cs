@@ -9,11 +9,13 @@ using Serilog;
 using Serilog.Events;
 using System.IO;
 using System.Text;
+using BlankApp.Services;
 
 namespace BlankApp
 {
     /// <summary>
     /// Interaction logic for App.xaml
+    /// 汤总
     /// </summary>
     public partial class App
     {
@@ -58,19 +60,21 @@ namespace BlankApp
 
         protected override void InitializeShell(Window shell)
         {
-            #region 登录窗口
+            //#region 登录窗口
             var login = new LoginDialog();
             if (!login.ShowDialog().GetValueOrDefault())
             {
                 Environment.Exit(0);
             }
-            #endregion
+            //#endregion
 
             base.InitializeShell(shell);
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            containerRegistry.RegisterSingleton<IModuleService, ModuleService>();
+
             //注入 Serilog 日志系统
             containerRegistry.RegisterSerilog();
             //注册基础设施

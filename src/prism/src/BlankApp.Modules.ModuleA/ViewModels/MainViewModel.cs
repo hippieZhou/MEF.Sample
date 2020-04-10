@@ -1,7 +1,6 @@
 ﻿using BlankApp.Doamin.Contracts;
-using BlankApp.Infrastructure.Event;
+using BlankApp.Modules.ModuleA.Views;
 using Prism.Commands;
-using Prism.Events;
 using Prism.Logging;
 using Prism.Mvvm;
 using Prism.Regions;
@@ -20,22 +19,14 @@ namespace BlankApp.Modules.ModuleA.ViewModels
         }
 
         private readonly IRegionManager _regionManager;
-        private readonly IEventAggregator _eventAggregator;
         private readonly ILoggerFacade _logger;
 
         public MainViewModel(
             IRegionManager regionManager,
-            IEventAggregator eventAggregator,
             ILoggerFacade logger)
         {
             _regionManager = regionManager ?? throw new ArgumentNullException(nameof(regionManager));
-            _eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-
-            _eventAggregator.GetEvent<MessageSentEvent>().Subscribe(message => 
-            {
-                Message = message;
-            });
         }
 
         private ICommand _navCommand;
@@ -47,10 +38,12 @@ namespace BlankApp.Modules.ModuleA.ViewModels
                 {
                     _navCommand = new DelegateCommand(() =>
                     {
-                        _regionManager.RequestNavigate(RegionContracts.MainContentRegion, "SubView", result =>
+                        var parameters = new NavigationParameters();
+                        parameters.Add("QueryString", DateTime.Now);
+                        _regionManager.RequestNavigate(RegionContracts.MainContentRegion, typeof(ViewA).FullName, result =>
                          {
                              _logger.Log(string.Format("Navigation to {0} complete. ", result.Context.Uri), Category.Debug, Priority.High);
-                         });
+                         }, parameters);
                     });
                 }
                 return _navCommand;

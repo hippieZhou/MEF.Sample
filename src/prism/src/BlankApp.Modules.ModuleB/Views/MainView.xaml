@@ -16,12 +16,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Orientation="Horizontal">
-            <TextBlock
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Text="{Binding Message}" />
-            <Button Command="{Binding BackCommand}" Content="返回上一页" />
-            <TextBlock Text="关键字:" />
+            <TextBlock VerticalAlignment="Center" Text="关键字:" />
             <TextBox Width="240" Text="{Binding QueryString}" />
             <Button
                 Width="48"

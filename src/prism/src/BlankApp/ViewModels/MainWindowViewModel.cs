@@ -3,27 +3,22 @@ using Prism.Modularity;
 using Prism.Mvvm;
 using System.Windows.Input;
 using System;
-using Prism.Regions;
-using BlankApp.Doamin.Contracts;
-using Prism.Logging;
 using System.Collections.ObjectModel;
+using BlankApp.Models;
+using BlankApp.Services;
 using System.Linq;
-using System.Windows.Controls;
+using BlankApp.Doamin.Events;
+using BlankApp.Doamin.Bus;
+using Prism.Events;
 
 namespace BlankApp.ViewModels
 {
-    public class Menu
-    {
-        public string Header { get; set; }
-        public UserControl View { get; set; }
-    }
     public class MainWindowViewModel : BindableBase
     {
-        private readonly IModuleCatalog _moduleCatalog;
-        private readonly IRegionManager _regionManager;
+        private readonly IEventBus _bus;
+        private readonly IModuleService _moduleService;
         private readonly IModuleManager _moduleManager;
-        private readonly ILoggerFacade _logger;
-
+        private readonly IEventAggregator _eventAggregator;
         private string _title = "Prism Application";
         public string Title
         {
@@ -31,93 +26,95 @@ namespace BlankApp.ViewModels
             set { SetProperty(ref _title, value); }
         }
 
-        private ObservableCollection<Menu> _primaryMenus;
-        public ObservableCollection<Menu> PrimaryMenu
+        private ObservableCollection<BusinessViewModel> _modules;
+        public ObservableCollection<BusinessViewModel> Modules
         {
-            get { return _primaryMenus ?? (_primaryMenus = new ObservableCollection<Menu>()); }
-            set { SetProperty(ref _primaryMenus, value); }
-        }
-
-        private ObservableCollection<IModuleInfo> _modules;
-        public ObservableCollection<IModuleInfo> Modules
-        {
-            get { return _modules ?? (_modules = new ObservableCollection<IModuleInfo>()); }
+            get { return _modules ?? (_modules = new ObservableCollection<BusinessViewModel>()); }
             set { SetProperty(ref _modules, value); }
         }
 
-        public MainWindowViewModel(
-            IRegionManager regionManager,
-            IModuleCatalog moduleCatalog,
-            IModuleManager moduleManager,
-            ILoggerFacade logger)
+        private ObservableCollection<Node> _nodes;
+        public ObservableCollection<Node> Nodes
         {
-            _moduleCatalog = moduleCatalog ?? throw new ArgumentNullException(nameof(moduleCatalog));
-            _regionManager = regionManager ?? throw new ArgumentNullException(nameof(regionManager));
-            _moduleManager = moduleManager ?? throw new ArgumentNullException(nameof(moduleManager));
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            get { return _nodes ?? (_nodes = new ObservableCollection<Node>()); }
+            set { SetProperty(ref _nodes, value); }
         }
 
-        private ICommand _loadCommand;
-        public ICommand LoadCommand
+        public MainWindowViewModel(
+            IEventBus bus,
+            IModuleService moduleService,
+            IModuleManager moduleManager,
+            IEventAggregator eventAggregator)
+        {
+            _bus = bus ?? throw new ArgumentNullException(nameof(bus));
+            _moduleService = moduleService ?? throw new ArgumentNullException(nameof(moduleService));
+            _moduleManager = moduleManager ?? throw new ArgumentNullException(nameof(moduleManager));
+            _eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
+        }
+
+        private ICommand _loadedCommand;
+        public ICommand LoadedCommand
         {
             get
             {
-                if (_loadCommand == null)
+                if (_loadedCommand == null)
                 {
-                    _loadCommand = new DelegateCommand(() =>
+                    _loadedCommand = new DelegateCommand(async() =>
                     {
+                        #region 预加载模块
+
+                        await _moduleService.Initialized();
+                        var business = _moduleService.Modules.Select(x => x.ToBusiness());
                         Modules.Clear();
-                        _moduleManager.LoadModuleCompleted += (sender, e) =>
-                        {
-                            Modules.Add(e.ModuleInfo);
-                            _logger.Log(string.Format("{0} 加载完毕", e.ModuleInfo.ModuleName), Category.Debug, Priority.High);
-                        };
+                        Modules.AddRange(business);
+                        RaisePropertyChanged(nameof(Modules));
 
-                     
-
-                        #region 加载模块
-                        foreach (var module in _moduleCatalog.Modules)
-                        {
-                            if (module == null)
-                                new DllNotFoundException(nameof(module));
-
-                            if (module.State != ModuleState.Initialized)
-                            {
-                                _moduleManager.LoadModule(module.ModuleName);
-                            }
-                        }
                         #endregion
-
-                        PrimaryMenu.Clear();
-                        var items = _regionManager.Regions[RegionContracts.TopContentRegion].Views.Cast<UserControl>();
-                        foreach (var item in items)
-                        {
-                            PrimaryMenu.Add(new Menu
-                            {
-                                //此处到时候需要通过附加属性的方式来获取菜单名称
-                                Header = Guid.NewGuid().ToString("N"),
-                                View = item
-                            });
-                        }
                     });
                 }
-                return _loadCommand;
+                return _loadedCommand;
             }
         }
 
-        private ICommand _switchMenuCommand;
-        public ICommand SwitchMenuCommand
+        private ICommand _invokeNodeCommand;
+        public ICommand InvokeNodeCommand
         {
             get
             {
-                if (_switchMenuCommand == null)
+                if (_invokeNodeCommand == null)
                 {
-                    _switchMenuCommand = new DelegateCommand<Menu>(menu =>
+                    _invokeNodeCommand = new DelegateCommand<string>(key =>
                     {
-                        _regionManager.Regions[RegionContracts.TopContentRegion].Activate(menu.View);
+                        Nodes.Clear();
+                        Nodes.AddRange(Modules.GetNodes(key));
+                        RaisePropertyChanged(nameof(Nodes));
                     });
                 }
-                return _switchMenuCommand;
+                return _invokeNodeCommand;
+            }
+        }
+
+        private ICommand _invokeModuleCommand;
+        public ICommand InvokeModuleCommand
+        {
+            get
+            {
+                if (_invokeModuleCommand == null)
+                {
+                    _invokeModuleCommand = new DelegateCommand<Node>(node =>
+                    {
+                        if (node == null)
+                            throw new ArgumentNullException(nameof(node));
+
+                        var business = Modules.FirstOrDefault(x => x.Id == node.Id);
+                        if (business.Module.State != ModuleState.Initialized)
+                        {
+                            _moduleManager.LoadModule(business.Module.ModuleName);
+                        }
+                        _eventAggregator.GetEvent<ShellSendEvent>().Publish(business.Module.ModuleName);
+                    });
+                }
+                return _invokeModuleCommand;
             }
         }
     }

@@ -65,20 +65,16 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="ViewModels\SubViewModel.cs" />
+    <Compile Include="ViewModels\SideViewModel.cs" />
     <Compile Include="ViewModels\ViewAViewModel.cs" />
-    <Compile Include="ViewModels\ViewBViewModel.cs" />
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SubView.xaml.cs">
-      <DependentUpon>SubView.xaml</DependentUpon>
+    <Compile Include="Views\SideView.xaml.cs">
+      <DependentUpon>SideView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ViewA.xaml.cs">
       <DependentUpon>ViewA.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ViewB.xaml.cs">
-      <DependentUpon>ViewB.xaml</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -95,15 +91,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SubView.xaml">
+    <Page Include="Views\SideView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ViewA.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ViewB.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -119,6 +111,10 @@
     <ProjectReference Include="..\BlankApp.Infrastructure\BlankApp.Infrastructure.csproj">
       <Project>{2D3F57D7-FAD9-47FC-9B5F-83197752FBAF}</Project>
       <Name>BlankApp.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BlankApp.Themes\BlankApp.Themes.csproj">
+      <Project>{0cb77d5b-30e6-4ac2-a825-67c3e87ab397}</Project>
+      <Name>BlankApp.Themes</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
