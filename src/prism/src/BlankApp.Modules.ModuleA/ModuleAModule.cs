@@ -1,5 +1,4 @@
-﻿using BlankApp.Doamin.Bus;
-using BlankApp.Doamin.Contracts;
+﻿using BlankApp.Doamin.Contracts;
 using BlankApp.Doamin.Events;
 using BlankApp.Doamin.Modularity;
 using BlankApp.Modules.ModuleA.Views;

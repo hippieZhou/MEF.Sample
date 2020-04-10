@@ -5,11 +5,12 @@ using System.Windows.Input;
 using System;
 using System.Collections.ObjectModel;
 using BlankApp.Models;
-using BlankApp.Services;
 using System.Linq;
 using BlankApp.Doamin.Events;
 using BlankApp.Doamin.Bus;
 using Prism.Events;
+using System.Diagnostics;
+using BlankApp.Doamin.Services;
 
 namespace BlankApp.ViewModels
 {
@@ -111,6 +112,7 @@ namespace BlankApp.ViewModels
                         {
                             _moduleManager.LoadModule(business.Module.ModuleName);
                         }
+                        Trace.WriteLine(DateTime.Now);
                         _eventAggregator.GetEvent<ShellSendEvent>().Publish(business.Module.ModuleName);
                     });
                 }

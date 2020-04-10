@@ -10,6 +10,7 @@ using Serilog.Events;
 using System.IO;
 using System.Text;
 using BlankApp.Services;
+using BlankApp.Doamin.Services;
 
 namespace BlankApp
 {
@@ -74,6 +75,7 @@ namespace BlankApp
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterSingleton<IModuleService, ModuleService>();
+            containerRegistry.RegisterSingleton<INavigationService, NavigationService>();
 
             //注入 Serilog 日志系统
             containerRegistry.RegisterSerilog();

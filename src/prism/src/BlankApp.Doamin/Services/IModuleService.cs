@@ -1,9 +1,8 @@
-﻿using BlankApp.Models;
-using Prism.Modularity;
+﻿using Prism.Modularity;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace BlankApp.Services
+namespace BlankApp.Doamin.Services
 {
     public interface IModuleService
     {

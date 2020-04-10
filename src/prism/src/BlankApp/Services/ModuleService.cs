@@ -1,4 +1,4 @@
-﻿using BlankApp.Models;
+﻿using BlankApp.Doamin.Services;
 using Prism.Modularity;
 using Prism.Regions;
 using System;
