@@ -1,6 +1,5 @@
 ﻿using BlankApp.Infrastructure.Identity;
 using BlankApp.Infrastructure.Identity.Entities;
-using System;
 
 namespace BlankApp.Infrastructure.CrossCutting.Identity
 {

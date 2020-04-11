@@ -6,7 +6,7 @@
     prism:ViewModelLocator.AutoWireViewModel="True">
     <Grid>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-            <TextBlock Text="我是 ModuleA 的侧边栏" Visibility="{Binding Visibility}" />
+            <TextBlock Text="{Binding Title}" />
             <Button Command="{Binding AuthCommand}" Content="权限测试" />
         </StackPanel>
     </Grid>

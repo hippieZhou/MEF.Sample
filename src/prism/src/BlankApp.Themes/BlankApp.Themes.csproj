@@ -48,6 +48,9 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\LocalizedDescriptionAttribute.cs" />
+    <Compile Include="Converters\EnumDescriptionTypeConverter.cs" />
+    <Compile Include="Extensions\EnumBindingSourceExtension.cs" />
     <Compile Include="Extensions\ViewExtension.cs" />
     <Compile Include="Extensions\WindowExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

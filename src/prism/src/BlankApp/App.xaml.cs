@@ -11,6 +11,9 @@ using System.IO;
 using System.Text;
 using BlankApp.Services;
 using BlankApp.Doamin.Services;
+using BlankApp.ViewModels;
+using BlankApp.Dialogs;
+using Prism.Services.Dialogs;
 
 namespace BlankApp
 {
@@ -62,11 +65,14 @@ namespace BlankApp
         protected override void InitializeShell(Window shell)
         {
             //#region 登录窗口
-            var login = new LoginDialog();
-            if (!login.ShowDialog().GetValueOrDefault())
+            var dialog = Container.Resolve<IDialogService>();
+            dialog.ShowDialog(nameof(LoginDialog), new DialogParameters($"message=用户登录"), r =>
             {
-                Environment.Exit(0);
-            }
+                if (r.Result == ButtonResult.Cancel)
+                {
+                    Environment.Exit(0);
+                }
+            });
             //#endregion
 
             base.InitializeShell(shell);
@@ -74,6 +80,11 @@ namespace BlankApp
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            containerRegistry.RegisterDialogWindow<MainDialog>();
+
+            containerRegistry.RegisterDialog<NotificationDialog, NotificationDialogViewModel>();
+            containerRegistry.RegisterDialog<LoginDialog, LoginDialogViewModel>();
+
             containerRegistry.RegisterSingleton<IModuleService, ModuleService>();
 
             //注入 Serilog 日志系统

@@ -7,21 +7,17 @@ using Prism.Logging;
 using BlankApp.Infrastructure.Context;
 using System.Linq;
 using BlankApp.Infrastructure.Identity.Entities;
+using Prism.Services.Dialogs;
 
 namespace BlankApp.ViewModels
 {
-	public class LoginDialogViewModel: BindableBase
-    {
+	public class LoginDialogViewModel: BindableBase, IDialogAware
+	{
 		private readonly ApplicationDbContext _dbContext;
 		private readonly IIdentityManager _identityManager;
 		private readonly ILoggerFacade _logger;
 
-		private bool? _dialogResult;
-		public bool? DialogResult
-		{
-			get { return _dialogResult; }
-			set { SetProperty(ref _dialogResult, value); }
-		}
+		public string Title => "用户登录";
 
 		private string _message;
 		public string Message
@@ -70,7 +66,7 @@ namespace BlankApp.ViewModels
 						if (ok)
 						{
 							_logger.Log("登录成功", Category.Debug, Priority.High);
-							DialogResult = true;
+							RaiseRequestClose(new DialogResult(ButtonResult.OK));
 						}
 						else
 						{
@@ -96,7 +92,7 @@ namespace BlankApp.ViewModels
 						if (ok)
 						{
 							_logger.Log("登录成功", Category.Debug, Priority.High);
-							DialogResult = true;
+							RaiseRequestClose(new DialogResult(ButtonResult.OK));
 						}
 						else
 						{
@@ -117,11 +113,32 @@ namespace BlankApp.ViewModels
 				{
 					_exitCommand = new DelegateCommand(() =>
 					{
-						DialogResult = false;
+						RaiseRequestClose(new DialogResult(ButtonResult.Cancel));
 					});
 				}
 				return _exitCommand;
 			}
 		}
+
+		#region Services
+		public event Action<IDialogResult> RequestClose;
+		public virtual void RaiseRequestClose(IDialogResult dialogResult)
+		{
+			RequestClose?.Invoke(dialogResult);
+		}
+
+		public virtual bool CanCloseDialog()
+		{
+			return true;
+		}
+		public virtual void OnDialogClosed()
+		{
+		}
+
+		public virtual void OnDialogOpened(IDialogParameters parameters)
+		{
+			Message = parameters.GetValue<string>("message");
+		}
+		#endregion
 	}
 }
