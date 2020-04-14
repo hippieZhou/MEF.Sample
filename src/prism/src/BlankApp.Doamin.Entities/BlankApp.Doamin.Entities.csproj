@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{2D3F57D7-FAD9-47FC-9B5F-83197752FBAF}</ProjectGuid>
+    <ProjectGuid>{987B92F0-1889-460A-BAEE-B88E6E47AEAE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BlankApp.Infrastructure</RootNamespace>
-    <AssemblyName>BlankApp.Infrastructure</AssemblyName>
+    <RootNamespace>BlankApp.Doamin.Entities</RootNamespace>
+    <AssemblyName>BlankApp.Doamin.Entities</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -31,17 +31,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Prism, Version=7.2.0.1367, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Prism.Core.7.2.0.1367\lib\net45\Prism.dll</HintPath>
-    </Reference>
     <Reference Include="SqlSugar, Version=5.0.0.13, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\sqlSugar.5.0.0.13\lib\SqlSugar.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.ValueTuple.4.5.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
-    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -50,29 +44,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Bus\InMemoryBus.cs" />
-    <Compile Include="Context\ApplicationDbContext.cs" />
-    <Compile Include="Context\ApplicationDbInitializer.cs" />
-    <Compile Include="Context\AsyncRepository.cs" />
-    <Compile Include="Context\UnitOfWork.cs" />
-    <Compile Include="DependencyInjection.cs" />
-    <Compile Include="Identity\Entities\ApplicationRole.cs" />
-    <Compile Include="Identity\Entities\ApplicationUser.cs" />
-    <Compile Include="Identity\IIdentityManager.cs" />
+    <Compile Include="Person.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BlankApp.Doamin.Entities\BlankApp.Doamin.Entities.csproj">
-      <Project>{987b92f0-1889-460a-baee-b88e6e47aeae}</Project>
-      <Name>BlankApp.Doamin.Entities</Name>
-    </ProjectReference>
     <ProjectReference Include="..\BlankApp.Doamin\BlankApp.Doamin.csproj">
-      <Project>{D7DD19BC-2216-4B4B-B0CC-7821177730CB}</Project>
+      <Project>{d7dd19bc-2216-4b4b-b0cc-7821177730cb}</Project>
       <Name>BlankApp.Doamin</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -14,17 +14,16 @@ using BlankApp.Doamin.Services;
 using BlankApp.ViewModels;
 using BlankApp.Dialogs;
 using Prism.Services.Dialogs;
+using BlankApp.Extensions;
 
 namespace BlankApp
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// 汤总
-    /// </summary>
     public partial class App
     {
         protected override void OnStartup(StartupEventArgs e)
         {
+            this.CatchGlobalException();
+
             Log.Logger = new LoggerConfiguration()
 #if DEBUG
                 .MinimumLevel.Debug()
@@ -90,9 +89,9 @@ namespace BlankApp
             //注入 Serilog 日志系统
             containerRegistry.RegisterSerilog();
             //注册基础设施
-            containerRegistry.AddInfrastructure();
+            containerRegistry.RegisterInfrastructure();
             //注册横切面
-            containerRegistry.AddCrossCutting();
+            containerRegistry.RegisterCrossCutting();
         }
 
         protected override IModuleCatalog CreateModuleCatalog()

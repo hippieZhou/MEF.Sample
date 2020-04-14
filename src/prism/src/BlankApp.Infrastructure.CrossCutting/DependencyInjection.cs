@@ -9,7 +9,7 @@ namespace BlankApp.Infrastructure.CrossCutting
     /// </summary>
     public static class DependencyInjection
     {
-        public static IContainerRegistry AddCrossCutting(this IContainerRegistry containerRegistry)
+        public static IContainerRegistry RegisterCrossCutting(this IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterSingleton<IIdentityManager, IdentityManager>();
             return containerRegistry;

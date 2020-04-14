@@ -88,8 +88,12 @@
     <PackageReference Include="Prism.Wpf" Version="7.2.0.1367" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BlankApp.Doamin.Entities\BlankApp.Doamin.Entities.csproj">
+      <Project>{987b92f0-1889-460a-baee-b88e6e47aeae}</Project>
+      <Name>BlankApp.Doamin.Entities</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BlankApp.Doamin\BlankApp.Doamin.csproj">
-      <Project>{d7dd19bc-2216-4b4b-b0cc-7821177730cb}</Project>
+      <Project>{D7DD19BC-2216-4B4B-B0CC-7821177730CB}</Project>
       <Name>BlankApp.Doamin</Name>
     </ProjectReference>
     <ProjectReference Include="..\BlankApp.Infrastructure\BlankApp.Infrastructure.csproj">

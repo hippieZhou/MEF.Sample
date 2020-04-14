@@ -7,7 +7,7 @@ namespace BlankApp.Doamin.Entities
     /// </summary>
     public class AuditableEntity
     {
-        public Guid Id { get; set; }
+        public virtual Guid Id { get; set; }
 
         public string CreatedBy { get; set; }
 

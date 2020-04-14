@@ -129,7 +129,6 @@ namespace BlankApp.ViewModels
                         }
 
                         _regionManager.RequestNavigate(RegionContracts.MainContentRegion, business.Module.ModuleName);
-                        Trace.WriteLine(DateTime.Now);
                     });
                 }
                 return _invokeModuleCommand;

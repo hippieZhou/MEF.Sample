@@ -3,6 +3,7 @@ using BlankApp.Doamin.Context;
 using BlankApp.Infrastructure.Bus;
 using BlankApp.Infrastructure.Context;
 using Prism.Ioc;
+using SqlSugar;
 
 namespace BlankApp.Infrastructure
 {
@@ -11,11 +12,12 @@ namespace BlankApp.Infrastructure
     /// </summary>
     public static class DependencyInjection
     {
-        public static IContainerRegistry AddInfrastructure(this IContainerRegistry containerRegistry)
+        public static IContainerRegistry RegisterInfrastructure(this IContainerRegistry containerRegistry)
         {
             //注册消息总线
             containerRegistry.RegisterSingleton<IEventBus, InMemoryBus>();
 
+            containerRegistry.Register<SqlSugarClient>("defalut");
             containerRegistry.RegisterSingleton<ApplicationDbContext>();
             containerRegistry.Register(typeof(IAsyncRepository<>), typeof(AsyncRepository<>));
             containerRegistry.Register<IUnitOfWork, UnitOfWork>();
