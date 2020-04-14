@@ -56,6 +56,7 @@
     <Compile Include="Contracts\Todo.cs" />
     <Compile Include="Entities\AuditableEntity.cs" />
     <Compile Include="Events\MessageSentEvent.cs" />
+    <Compile Include="Events\RaisedExceptionEvent.cs" />
     <Compile Include="Extensions\AttributeExtensions.cs" />
     <Compile Include="Modularity\BusinessModuleAttribute.cs" />
     <Compile Include="Services\IModuleService.cs" />

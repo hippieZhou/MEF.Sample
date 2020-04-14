@@ -13,22 +13,30 @@ namespace BlankApp.Extensions
         {
             app.DispatcherUnhandledException += (sender, args) =>
             {
-                app.Container.Resolve<ILoggerFacade>()?.Log(args.Exception.ToString(), Category.Exception, Priority.High);
+                ProcessException(app.Container.Resolve<ILoggerFacade>(), app.Container.Resolve<IDialogService>(), args.Exception);
                 args.Handled = true;
-                app.Container.Resolve<IDialogService>()?.ShowDialog(nameof(NotificationDialog), new DialogParameters($"message=异常提示"), r => 
-                {
-                    Environment.Exit(0);
-                });
             };
 
             AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
             {
-                app.Container.Resolve<ILoggerFacade>()?.Log(args.ExceptionObject.ToString(), Category.Exception, Priority.High);
-                app.Container.Resolve<IDialogService>()?.ShowDialog(nameof(NotificationDialog), new DialogParameters($"message=异常提示"), r =>
+                ProcessException(app.Container.Resolve<ILoggerFacade>(), app.Container.Resolve<IDialogService>(), args.ExceptionObject);
+            };
+        }
+
+        private static void ProcessException(ILoggerFacade loggerFacade, IDialogService dialogService, object exception)
+        {
+            if (loggerFacade != null)
+            {
+                loggerFacade.Log(exception.ToString(), Category.Exception, Priority.High);
+            }
+
+            if (dialogService != null)
+            {
+                dialogService.ShowDialog(nameof(NotificationDialog), new DialogParameters($"message=异常提示"), r =>
                 {
                     Environment.Exit(0);
                 });
-            };
+            }
         }
     }
 }

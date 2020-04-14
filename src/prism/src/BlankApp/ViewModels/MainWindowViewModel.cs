@@ -6,12 +6,15 @@ using System;
 using System.Collections.ObjectModel;
 using BlankApp.Models;
 using System.Linq;
-using System.Diagnostics;
 using BlankApp.Doamin.Services;
 using BlankApp.Doamin.Contracts;
 using Prism.Regions;
 using System.Windows.Controls;
 using BlankApp.Infrastructure.Identity;
+using Prism.Events;
+using BlankApp.Doamin.Events;
+using Prism.Services.Dialogs;
+using BlankApp.Dialogs;
 
 namespace BlankApp.ViewModels
 {
@@ -20,7 +23,10 @@ namespace BlankApp.ViewModels
         private readonly IModuleService _moduleService;
         private readonly IModuleManager _moduleManager;
         private readonly IRegionManager _regionManager;
+        private readonly IEventAggregator _eventAggregator;
+        private readonly IDialogService _dialogService;
         private readonly IIdentityManager _identityManager;
+
         private string _title = "Prism Application";
         public string Title
         {
@@ -46,12 +52,24 @@ namespace BlankApp.ViewModels
             IModuleService moduleService,
             IModuleManager moduleManager,
             IRegionManager regionManager,
+            IEventAggregator eventAggregator,
+            IDialogService dialogService,
             IIdentityManager identityManager)
         {
             _moduleService = moduleService ?? throw new ArgumentNullException(nameof(moduleService));
             _moduleManager = moduleManager ?? throw new ArgumentNullException(nameof(moduleManager));
             _regionManager = regionManager ?? throw new ArgumentNullException(nameof(regionManager));
+            _eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
+            _dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
             _identityManager = identityManager ?? throw new ArgumentNullException(nameof(identityManager));
+
+            _eventAggregator.GetEvent<RaisedExceptionEvent>().Subscribe(ex => 
+            {
+                _dialogService.ShowDialog(nameof(NotificationDialog), new DialogParameters($"message=异常提示"), r =>
+                {
+                   //todo
+                });
+            });
         }
 
         private ICommand _loadedCommand;
