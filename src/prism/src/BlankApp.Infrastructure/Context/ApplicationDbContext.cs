@@ -1,7 +1,6 @@
 ﻿using BlankApp.Doamin.Entities;
 using BlankApp.Infrastructure.Identity.Entities;
 using Prism.Logging;
-using SqlSugar;
 using System;
 using System.Linq;
 
@@ -13,39 +12,15 @@ namespace BlankApp.Infrastructure.Context
     /// </summary>
     public class ApplicationDbContext
     {
-        private readonly ISqlSugarClient _sugarClient;
         private readonly ILoggerFacade _loggerFacade;
 
         public IQueryable<ApplicationUser> Users { get; set; }
         public IQueryable<Person> Person { get; set; }
 
-        public ApplicationDbContext(SqlSugarClient sugarClient, ILoggerFacade loggerFacade)
+        public ApplicationDbContext(ILoggerFacade loggerFacade)
         {
-            _sugarClient = sugarClient;
             _loggerFacade = loggerFacade ?? throw new ArgumentNullException(nameof(loggerFacade));
         }
-
-        private SqlSugarClient GetInstance()
-        {
-            SqlSugarClient db = new SqlSugarClient(new ConnectionConfig()
-            {
-                ConnectionString = "data source= db.sqlite3",
-                DbType = DbType.Sqlite,
-                IsAutoCloseConnection = true,
-                InitKeyType = InitKeyType.Attribute
-            });
-
-            db.CodeFirst.SetStringDefaultLength(200).InitTables(typeof(Person));
-
-            //Print sql
-            db.Aop.OnLogExecuting = (sql, pars) =>
-            {
-                var message = sql + "\r\n" + db.Utilities.SerializeObject(pars.ToDictionary(it => it.ParameterName, it => it.Value));
-                _loggerFacade.Log(message, Category.Debug, Priority.None);
-            };
-            return db;
-        }
-
 
         public IQueryable<TEntity> DbSet<TEntity>() where TEntity : AuditableEntity
         {
