@@ -1,5 +1,6 @@
 ﻿using BlankApp.Doamin.Entities;
 using BlankApp.Infrastructure.Identity.Entities;
+using BlankApp.Infrastructure.Settings;
 using Prism.Logging;
 using System;
 using System.Linq;
@@ -12,13 +13,15 @@ namespace BlankApp.Infrastructure.Context
     /// </summary>
     public class ApplicationDbContext
     {
+        private readonly DatabaseSettings _connectionStrings;
         private readonly ILoggerFacade _loggerFacade;
 
         public IQueryable<ApplicationUser> Users { get; set; }
         public IQueryable<Person> Person { get; set; }
 
-        public ApplicationDbContext(ILoggerFacade loggerFacade)
+        public ApplicationDbContext(DatabaseSettings connectionStrings, ILoggerFacade loggerFacade)
         {
+            _connectionStrings = connectionStrings ?? throw new ArgumentNullException(nameof(connectionStrings));
             _loggerFacade = loggerFacade ?? throw new ArgumentNullException(nameof(loggerFacade));
         }
 

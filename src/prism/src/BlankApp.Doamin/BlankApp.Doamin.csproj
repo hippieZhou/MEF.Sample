@@ -47,7 +47,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Bus\IEventBus.cs" />
     <Compile Include="Context\IAsyncRepository.cs" />
     <Compile Include="Context\IUnitOfWork.cs" />
     <Compile Include="Context\Todo.cs" />

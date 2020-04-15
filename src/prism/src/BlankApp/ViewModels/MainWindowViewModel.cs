@@ -1,5 +1,4 @@
 ﻿using Prism.Commands;
-using Prism.Modularity;
 using Prism.Mvvm;
 using System.Windows.Input;
 using System;
@@ -7,9 +6,6 @@ using System.Collections.ObjectModel;
 using BlankApp.Models;
 using System.Linq;
 using BlankApp.Doamin.Services;
-using BlankApp.Doamin.Contracts;
-using Prism.Regions;
-using System.Windows.Controls;
 using BlankApp.Infrastructure.Identity;
 using Prism.Events;
 using BlankApp.Doamin.Events;
@@ -21,8 +17,6 @@ namespace BlankApp.ViewModels
     public class MainWindowViewModel : BindableBase
     {
         private readonly IModuleService _moduleService;
-        private readonly IModuleManager _moduleManager;
-        private readonly IRegionManager _regionManager;
         private readonly IEventAggregator _eventAggregator;
         private readonly IDialogService _dialogService;
         private readonly IIdentityManager _identityManager;
@@ -50,15 +44,11 @@ namespace BlankApp.ViewModels
 
         public MainWindowViewModel(
             IModuleService moduleService,
-            IModuleManager moduleManager,
-            IRegionManager regionManager,
             IEventAggregator eventAggregator,
             IDialogService dialogService,
             IIdentityManager identityManager)
         {
             _moduleService = moduleService ?? throw new ArgumentNullException(nameof(moduleService));
-            _moduleManager = moduleManager ?? throw new ArgumentNullException(nameof(moduleManager));
-            _regionManager = regionManager ?? throw new ArgumentNullException(nameof(regionManager));
             _eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             _dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
             _identityManager = identityManager ?? throw new ArgumentNullException(nameof(identityManager));
@@ -79,16 +69,12 @@ namespace BlankApp.ViewModels
             {
                 if (_loadedCommand == null)
                 {
-                    _loadedCommand = new DelegateCommand(async() =>
+                    _loadedCommand = new DelegateCommand(() =>
                     {
                         #region 预加载模块
-
-                        await _moduleService.Initialized();
-                        var business = _moduleService.Modules.Select(x => x.ToBusiness());
                         Modules.Clear();
-                        Modules.AddRange(business);
+                        Modules.AddRange(_moduleService.Modules.Select(x => x.ToBusiness()));
                         RaisePropertyChanged(nameof(Modules));
-
                         #endregion
 
                         Title = $"{_identityManager.CurrentUser.UserName}，欢迎回来";
@@ -128,25 +114,13 @@ namespace BlankApp.ViewModels
                         if (node == null)
                             throw new ArgumentNullException(nameof(node));
 
+
                         var business = Modules.FirstOrDefault(x => x.Id == node.Id);
-                        if (business.Module.State != ModuleState.Initialized)
+                        if (business != null)
                         {
-                            _moduleManager.LoadModule(business.Module.ModuleName);
+                            _moduleService.ActivateSideView(business.Module);
+                            _moduleService.ActivateMainView(business.Module);
                         }
-
-                        _regionManager.Regions[RegionContracts.SideContentRegion].ActiveViews.Cast<UserControl>().ToList().ForEach(p => 
-                        {
-                            _regionManager.Regions[RegionContracts.SideContentRegion].Deactivate(p);
-                        });
-
-                        var sideView = _regionManager.Regions[RegionContracts.SideContentRegion].Views
-                        .FirstOrDefault(x => string.Equals(x.GetType().Assembly.CodeBase, business.Module.Ref, StringComparison.OrdinalIgnoreCase));
-                        if (sideView != null)
-                        {
-                            _regionManager.Regions[RegionContracts.SideContentRegion].Activate(sideView);
-                        }
-
-                        _regionManager.RequestNavigate(RegionContracts.MainContentRegion, business.Module.ModuleName);
                     });
                 }
                 return _invokeModuleCommand;

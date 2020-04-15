@@ -7,6 +7,7 @@ namespace BlankApp.Doamin.Services
     public interface IModuleService
     {
         IEnumerable<IModuleInfo> Modules { get; }
-        Task Initialized();
+        void ActivateSideView(IModuleInfo module);
+        void ActivateMainView(IModuleInfo module);
     }
 }
