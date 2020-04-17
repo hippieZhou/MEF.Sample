@@ -5,11 +5,10 @@
     xmlns:local="clr-namespace:BlankApp"
     xmlns:prism="http://prismlibrary.com/">
     <prism:PrismApplication.Resources>
-        <Style TargetType="Window">
-            <Setter Property="TextElement.FontSize" Value="14" />
-            <Setter Property="TextElement.FontWeight" Value="Regular" />
-            <Setter Property="TextOptions.TextFormattingMode" Value="Ideal" />
-            <Setter Property="TextOptions.TextRenderingMode" Value="Auto" />
-        </Style>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/BlankApp.Themes;component/Themes/Controls.Theme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </prism:PrismApplication.Resources>
 </prism:PrismApplication>
