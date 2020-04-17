@@ -5,15 +5,14 @@ using System.Windows.Input;
 using System;
 using Prism.Logging;
 using BlankApp.Infrastructure.Context;
-using System.Linq;
-using BlankApp.Infrastructure.Identity.Entities;
 using Prism.Services.Dialogs;
+using BlankApp.Doamin.Framework;
+using BlankApp.Doamin.Context;
 
 namespace BlankApp.ViewModels
 {
 	public class LoginDialogViewModel: BindableBase, IDialogAware
 	{
-		private readonly ApplicationDbContext _dbContext;
 		private readonly IIdentityManager _identityManager;
 		private readonly ILoggerFacade _logger;
 
@@ -27,11 +26,9 @@ namespace BlankApp.ViewModels
 		}
 
 		public LoginDialogViewModel(
-			ApplicationDbContext dbContext,
 			IIdentityManager identityManager,
 			ILoggerFacade logger)
 		{
-			_dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
 			_identityManager = identityManager ?? throw new ArgumentNullException(nameof(identityManager));
 			_logger = logger ?? throw new ArgumentNullException(nameof(logger));
 		}
@@ -45,7 +42,7 @@ namespace BlankApp.ViewModels
 				{
 					_loadedCommand = new DelegateCommand(async () =>
 					{
-						await ApplicationDbInitializer.SeedAsync(_dbContext);
+						await ApplicationDbInitializer.SeedAsync();
 					});
 				}
 				return _loadedCommand;
@@ -61,17 +58,7 @@ namespace BlankApp.ViewModels
 				{
 					_adminloginCommand = new DelegateCommand(() =>
 					{
-						var admin = _dbContext.Users.FirstOrDefault(x => x.Role == ApplicationRole.Administrator);
-						var ok = _identityManager.Login(admin);
-						if (ok)
-						{
-							_logger.Log("登录成功", Category.Debug, Priority.High);
-							RaiseRequestClose(new DialogResult(ButtonResult.OK));
-						}
-						else
-						{
-							Message = "用户名和密码不匹配, 登录失败";
-						}
+						Login("管理员", "admin");
 					});
 				}
 				return _adminloginCommand;
@@ -87,20 +74,24 @@ namespace BlankApp.ViewModels
 				{
 					_userloginCommand = new DelegateCommand(() =>
 					{
-						var user = _dbContext.Users.FirstOrDefault(x => x.Role == ApplicationRole.User);
-						var ok = _identityManager.Login(user);
-						if (ok)
-						{
-							_logger.Log("登录成功", Category.Debug, Priority.High);
-							RaiseRequestClose(new DialogResult(ButtonResult.OK));
-						}
-						else
-						{
-							Message = "用户名和密码不匹配, 登录失败";
-						}
+						Login("普通用户", "user");
 					});
 				}
 				return _userloginCommand;
+			}
+		}
+
+		private void Login(string userName,string password)
+		{
+			var ok = _identityManager.Login(userName, password);
+			if (ok)
+			{
+				_logger.Log("登录成功", Category.Debug, Priority.High);
+				RaiseRequestClose(new DialogResult(ButtonResult.OK));
+			}
+			else
+			{
+				Message = "用户名和密码不匹配, 登录失败";
 			}
 		}
 

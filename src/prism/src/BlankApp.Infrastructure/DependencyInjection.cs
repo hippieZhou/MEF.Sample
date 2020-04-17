@@ -41,8 +41,9 @@ namespace BlankApp.Infrastructure
                 containerRegistry.RegisterInstance(type, instance);
             });
             #endregion
-
             containerRegistry.RegisterSingleton<ApplicationDbContext>();
+            containerRegistry.RegisterSingleton<ApplicationIdentityDbContext>();
+            containerRegistry.RegisterSingleton<IApplicationDbContext, ApplicationDbContext>();
             containerRegistry.Register(typeof(IAsyncRepository<>), typeof(AsyncRepository<>));
             containerRegistry.Register<IUnitOfWork, UnitOfWork>();
             return containerRegistry;

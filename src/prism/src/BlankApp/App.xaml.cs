@@ -15,6 +15,7 @@ using BlankApp.ViewModels;
 using BlankApp.Dialogs;
 using Prism.Services.Dialogs;
 using BlankApp.Extensions;
+using BlankApp.Doamin.Framework;
 
 namespace BlankApp
 {
@@ -58,6 +59,7 @@ namespace BlankApp
         /// <returns></returns>
         protected override Window CreateShell()
         {
+            EnginContext.Initialize(new GeneralEngine(Container));
             return Container.Resolve<MainWindow>();
         }
 

@@ -79,7 +79,11 @@
                 prism:RegionManager.RegionName="{x:Static contracts:RegionContracts.SideContentRegion}"
                 BorderBrush="Red"
                 BorderThickness="2" />
-            <GridSplitter  Grid.Column="1" BorderBrush="Gray" BorderThickness="1" VerticalAlignment="Stretch" />
+            <GridSplitter
+                Grid.Column="1"
+                VerticalAlignment="Stretch"
+                BorderBrush="Gray"
+                BorderThickness="1" />
             <ContentControl Grid.Column="2" prism:RegionManager.RegionName="{x:Static contracts:RegionContracts.MainContentRegion}" />
         </Grid>
     </Grid>

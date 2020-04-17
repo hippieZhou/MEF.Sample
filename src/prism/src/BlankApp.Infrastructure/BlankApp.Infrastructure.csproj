@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="Context\ApplicationDbContext.cs" />
     <Compile Include="Context\ApplicationDbInitializer.cs" />
+    <Compile Include="Context\ApplicationIdentityDbContext.cs" />
     <Compile Include="Context\AsyncRepository.cs" />
     <Compile Include="Context\UnitOfWork.cs" />
     <Compile Include="DependencyInjection.cs" />

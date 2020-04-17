@@ -4,25 +4,34 @@ using System.Collections.Generic;
 using BlankApp.Doamin.Entities;
 using System.Linq;
 using BlankApp.Infrastructure.Identity.Entities;
+using BlankApp.Doamin.Context;
+using BlankApp.Doamin.Framework;
 
 namespace BlankApp.Infrastructure.Context
 {
     public static class ApplicationDbInitializer
     {
-        public static async Task SeedAsync(ApplicationDbContext context)
+        public static async Task SeedAsync()
         {
-            if (context == null)
+            var identityDbContext = EnginContext.Current.Resolve<ApplicationIdentityDbContext>();
+            if (identityDbContext == null)
             {
-                throw new ArgumentNullException(nameof(context));
+                throw new ArgumentNullException(nameof(ApplicationIdentityDbContext));
             }
 
             var users = new List<ApplicationUser>
             {
-                new ApplicationUser{ UserName = "管理员",Role = ApplicationRole.Administrator },
-                new ApplicationUser{ UserName = "普通用户",Role = ApplicationRole.User }
+                new ApplicationUser{ UserName = "管理员", Password = "admin",Role = ApplicationRole.Administrator },
+                new ApplicationUser{ UserName = "普通用户",Password = "user",Role = ApplicationRole.User }
             };
-            context.Users = users.AsQueryable();
+            identityDbContext.Users = users.AsQueryable();
 
+
+            var dbContext = EnginContext.Current.Resolve<ApplicationDbContext>();
+            if (dbContext == null)
+            {
+                throw new ArgumentNullException(nameof(IApplicationDbContext));
+            }
             var persons = new List<Person>();
             Enumerable.Range(0, 100).ToList().ForEach(i =>
             {
@@ -35,9 +44,7 @@ namespace BlankApp.Infrastructure.Context
                 };
                 persons.Add(person);
             });
-
-            context.Person = persons.AsQueryable();
-
+            dbContext.Persons = persons.AsQueryable();
             await Task.Yield();
         }
     }

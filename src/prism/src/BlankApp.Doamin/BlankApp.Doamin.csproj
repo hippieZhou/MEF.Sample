@@ -47,16 +47,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Context\IApplicationDbContext.cs" />
     <Compile Include="Context\IAsyncRepository.cs" />
     <Compile Include="Context\IUnitOfWork.cs" />
-    <Compile Include="Context\Todo.cs" />
     <Compile Include="Contracts\MainMenuContracts.cs" />
     <Compile Include="Contracts\RegionContracts.cs" />
-    <Compile Include="Contracts\Todo.cs" />
     <Compile Include="Entities\AuditableEntity.cs" />
     <Compile Include="Events\MessageSentEvent.cs" />
     <Compile Include="Events\RaisedExceptionEvent.cs" />
     <Compile Include="Extensions\AttributeExtensions.cs" />
+    <Compile Include="Framework\EnginContext.cs" />
+    <Compile Include="Framework\IEngine.cs" />
     <Compile Include="Modularity\BusinessModuleAttribute.cs" />
     <Compile Include="Services\IModuleService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
