@@ -10,7 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0 - Docs", "0 - Docs", "{BB
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4- Modules", "4- Modules", "{E1702116-3127-4216-BB24-5E7B9D921763}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 - Base", "1 - Base", "{C6E110C6-C5E0-4B13-8A1F-51404D09A86A}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 - Domain", "1 - Domain", "{C6E110C6-C5E0-4B13-8A1F-51404D09A86A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlankApp.Infrastructure", "src\BlankApp.Infrastructure\BlankApp.Infrastructure.csproj", "{2D3F57D7-FAD9-47FC-9B5F-83197752FBAF}"
 EndProject
