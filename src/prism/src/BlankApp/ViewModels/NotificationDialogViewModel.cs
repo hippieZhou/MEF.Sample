@@ -31,7 +31,7 @@ namespace BlankApp.ViewModels
             {
                 if (_closeDialogCommand == null)
                 {
-                    _closeDialogCommand = new DelegateCommand<string>(parameter => 
+                    _closeDialogCommand = new DelegateCommand<string>(parameter =>
                     {
                         ButtonResult result = ButtonResult.None;
 

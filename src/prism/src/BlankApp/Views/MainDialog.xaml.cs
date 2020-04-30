@@ -8,7 +8,6 @@ namespace BlankApp.Views
         public IDialogResult Result { get; set; }
         public MainDialog()
         {
-            //Owner = Application.Current.MainWindow;
             InitializeComponent();
         }
     }

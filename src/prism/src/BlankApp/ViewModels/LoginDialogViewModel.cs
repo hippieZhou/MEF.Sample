@@ -1,17 +1,16 @@
-﻿using BlankApp.Infrastructure.Identity;
-using Prism.Commands;
-using Prism.Mvvm;
-using System.Windows.Input;
-using System;
-using Prism.Logging;
+﻿using BlackApp.Application.Framework;
 using BlankApp.Infrastructure.Context;
+using BlankApp.Infrastructure.Identity;
+using Prism.Commands;
+using Prism.Logging;
+using Prism.Mvvm;
 using Prism.Services.Dialogs;
-using BlankApp.Doamin.Framework;
-using BlankApp.Doamin.Context;
+using System;
+using System.Windows.Input;
 
 namespace BlankApp.ViewModels
 {
-	public class LoginDialogViewModel: BindableBase, IDialogAware
+	public class LoginDialogViewModel : BindableBase, IDialogAware
 	{
 		private readonly IIdentityManager _identityManager;
 		private readonly ILoggerFacade _logger;
@@ -42,7 +41,8 @@ namespace BlankApp.ViewModels
 				{
 					_loadedCommand = new DelegateCommand(async () =>
 					{
-						await ApplicationDbInitializer.SeedAsync();
+						var identityDbContext = EnginContext.Current.Resolve<ApplicationIdentityDbContext>();
+						await ApplicationDbInitializer.SeedIdentityAsync(identityDbContext);
 					});
 				}
 				return _loadedCommand;
@@ -81,7 +81,7 @@ namespace BlankApp.ViewModels
 			}
 		}
 
-		private void Login(string userName,string password)
+		private void Login(string userName, string password)
 		{
 			var ok = _identityManager.Login(userName, password);
 			if (ok)

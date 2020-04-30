@@ -1,6 +1,5 @@
-﻿using BlankApp.Doamin.Context;
+﻿using BlackApp.Application.Context;
 using BlankApp.Infrastructure.Identity.Entities;
-using BlankApp.Infrastructure.Settings;
 using Prism.Logging;
 using System.Linq;
 
@@ -12,7 +11,7 @@ namespace BlankApp.Infrastructure.Context
     public class ApplicationIdentityDbContext : ApplicationDbContext, IApplicationDbContext
     {
         public IQueryable<ApplicationUser> Users { get; set; }
-        public ApplicationIdentityDbContext(DatabaseSettings databaseSettings, ILoggerFacade loggerFacade) : base(databaseSettings, loggerFacade)
+        public ApplicationIdentityDbContext(ILoggerFacade loggerFacade) : base(loggerFacade)
         {
         }
     }

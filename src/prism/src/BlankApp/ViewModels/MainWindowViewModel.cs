@@ -1,37 +1,55 @@
-﻿using Prism.Commands;
+﻿using BlackApp.Application.Events;
+using BlackApp.Application.Modularity;
+using BlankApp.Dialogs;
+using BlankApp.Infrastructure.Identity;
+using Prism.Commands;
+using Prism.Events;
+using Prism.Logging;
 using Prism.Mvvm;
-using System.Windows.Input;
+using Prism.Services.Dialogs;
 using System;
 using System.Collections.ObjectModel;
-using BlankApp.Models;
 using System.Linq;
-using BlankApp.Doamin.Services;
-using BlankApp.Infrastructure.Identity;
-using Prism.Events;
-using BlankApp.Doamin.Events;
-using Prism.Services.Dialogs;
-using BlankApp.Dialogs;
+using System.Windows.Input;
 
 namespace BlankApp.ViewModels
 {
+    public class Node
+    {
+        public Guid Id { get; private set; }
+        public string Title { get; private set; }
+        public Node(Guid id, string title)
+        {
+            Id = id;
+            Title = title;
+        }
+    }
+
     public class MainWindowViewModel : BindableBase
     {
-        private readonly IModuleService _moduleService;
+        private readonly IBusinessModuleLoader _moduleLoader;
         private readonly IEventAggregator _eventAggregator;
         private readonly IDialogService _dialogService;
         private readonly IIdentityManager _identityManager;
 
-        private string _title = "Prism Application";
+        private string _title = "Prism Application For PHM";
         public string Title
         {
             get { return _title; }
             set { SetProperty(ref _title, value); }
         }
 
-        private ObservableCollection<BusinessViewModel> _modules;
-        public ObservableCollection<BusinessViewModel> Modules
+        private string _message = "日志区域";
+        public string Message
         {
-            get { return _modules ?? (_modules = new ObservableCollection<BusinessViewModel>()); }
+            get { return _message; }
+            set { SetProperty(ref _message, value); }
+        }
+
+        private ObservableCollection<BusinessModuleEntity> _modules;
+        public ObservableCollection<BusinessModuleEntity> Modules
+        {
+            get { return _modules; }
             set { SetProperty(ref _modules, value); }
         }
 
@@ -43,21 +61,22 @@ namespace BlankApp.ViewModels
         }
 
         public MainWindowViewModel(
-            IModuleService moduleService,
+            IBusinessModuleLoader moduleLoader,
             IEventAggregator eventAggregator,
             IDialogService dialogService,
-            IIdentityManager identityManager)
+            IIdentityManager identityManager,
+            ILoggerFacade logger)
         {
-            _moduleService = moduleService ?? throw new ArgumentNullException(nameof(moduleService));
+            _moduleLoader = moduleLoader ?? throw new ArgumentNullException(nameof(moduleLoader));
             _eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             _dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
             _identityManager = identityManager ?? throw new ArgumentNullException(nameof(identityManager));
 
-            _eventAggregator.GetEvent<RaisedExceptionEvent>().Subscribe(ex => 
+            _eventAggregator.GetEvent<RaisedExceptionEvent>().Subscribe(ex =>
             {
                 _dialogService.ShowDialog(nameof(NotificationDialog), new DialogParameters($"message=异常提示"), r =>
                 {
-                   //todo
+                    //记录系统内部已知的错误日志
                 });
             });
         }
@@ -71,12 +90,7 @@ namespace BlankApp.ViewModels
                 {
                     _loadedCommand = new DelegateCommand(() =>
                     {
-                        #region 预加载模块
-                        Modules.Clear();
-                        Modules.AddRange(_moduleService.Modules.Select(x => x.ToBusiness()));
-                        RaisePropertyChanged(nameof(Modules));
-                        #endregion
-
+                        Modules = new ObservableCollection<BusinessModuleEntity>(_moduleLoader.Modules);
                         Title = $"{_identityManager.CurrentUser.UserName}，欢迎回来";
                     });
                 }
@@ -91,10 +105,14 @@ namespace BlankApp.ViewModels
             {
                 if (_invokeNodeCommand == null)
                 {
-                    _invokeNodeCommand = new DelegateCommand<string>(key =>
+                    _invokeNodeCommand = new DelegateCommand<string>(header =>
                     {
                         Nodes.Clear();
-                        Nodes.AddRange(Modules.GetNodes(key));
+                        var items = Modules
+                        .GroupBy(x => x.Header)
+                        .Where(x => x.Key == header)
+                        .SingleOrDefault().Select(x => new Node(x.Id, x.FriendlyName));
+                        Nodes.AddRange(items);
                         RaisePropertyChanged(nameof(Nodes));
                     });
                 }
@@ -118,8 +136,7 @@ namespace BlankApp.ViewModels
                         var business = Modules.FirstOrDefault(x => x.Id == node.Id);
                         if (business != null)
                         {
-                            _moduleService.ActivateSideView(business.Module);
-                            _moduleService.ActivateMainView(business.Module);
+                            _moduleLoader.ActivateModuleView(business);
                         }
                     });
                 }

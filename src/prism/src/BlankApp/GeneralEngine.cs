@@ -1,4 +1,4 @@
-﻿using BlankApp.Doamin.Framework;
+﻿using BlackApp.Application.Framework;
 using Prism.Ioc;
 using System;
 

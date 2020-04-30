@@ -1,68 +1,47 @@
-﻿using BlankApp.Doamin.Context;
-using BlankApp.Doamin.Entities;
-using BlankApp.Modules.ModuleB.Models;
+﻿using BlackApp.Application.Contracts;
 using Prism.Commands;
 using Prism.Mvvm;
-using Prism.Regions;
+using Prism.Services.Dialogs;
 using System;
-using System.Collections.ObjectModel;
-using System.Linq;
 using System.Windows.Input;
 
 namespace BlankApp.Modules.ModuleB.ViewModels
 {
-    /// <summary>
-    /// 接收跳转参数需要继承 INavigationAware 接口
-    /// </summary>
     public class MainViewModel : BindableBase
     {
-        private readonly IAsyncRepository<Person> _asyncRepository;
+        private readonly IDialogService _dialogService;
 
-        public MainViewModel(IAsyncRepository<Person> asyncRepository)
+        private string _message;
+        public string Message
         {
-            _asyncRepository = asyncRepository ?? throw new ArgumentNullException(nameof(asyncRepository));
+            get { return _message; }
+            set { SetProperty(ref _message, value); }
         }
 
-        private string _queryString = "我是来自 ModuleB 中的主界面";
-        public string QueryString
+        public MainViewModel(IDialogService dialogService)
         {
-            get { return _queryString; }
-            set { SetProperty(ref _queryString, value); }
+            _dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
+            Message = "View A from your Prism ModuleB";
         }
 
-        private ObservableCollection<PersonDto> _persons;
-        public ObservableCollection<PersonDto> Persons
-        {
-            get { return _persons ?? (_persons = new ObservableCollection<PersonDto>()); }
-            set { SetProperty(ref _persons, value); }
-        }
-
-        private ICommand _searchCommand;
-        public ICommand SearchCommand
+        private ICommand _sayCommand;
+        public ICommand SayCommand
         {
             get
             {
-                if (_searchCommand == null)
+                if (_sayCommand == null)
                 {
-                    _searchCommand = new DelegateCommand(() =>
+                    _sayCommand = new DelegateCommand(() =>
                     {
-                        var persons = _asyncRepository.Table.Where(x => x.Name.Contains(QueryString));
-                        if (persons.Any())
+
+                        _dialogService.ShowDialog(DialogContracts.Notification, new DialogParameters($"message={DateTime.Now}"), r =>
                         {
-                            Persons.Clear();
-                            foreach (var person in persons)
-                            {
-                                Persons.Add(new PersonDto { Name = person.Name });
-                            }
-                        }
+                            //Environment.Exit(0);
+                        });
                     });
                 }
-                return _searchCommand;
+                return _sayCommand;
             }
-        }
-
-        public void OnNavigatedTo(NavigationContext navigationContext)
-        {
         }
     }
 }

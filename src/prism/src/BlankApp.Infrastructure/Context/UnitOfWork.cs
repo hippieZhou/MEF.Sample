@@ -1,4 +1,4 @@
-﻿using BlankApp.Doamin.Context;
+﻿using BlackApp.Application.Context;
 using System;
 using System.Threading;
 using System.Threading.Tasks;

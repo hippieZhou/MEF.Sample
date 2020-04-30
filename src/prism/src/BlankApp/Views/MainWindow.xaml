@@ -2,7 +2,7 @@
     x:Class="BlankApp.Views.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:contracts="clr-namespace:BlankApp.Doamin.Contracts;assembly=BlankApp.Doamin"
+    xmlns:contracts="clr-namespace:BlackApp.Application.Contracts;assembly=BlackApp.Application"
     xmlns:converters="clr-namespace:BlankApp.Converters"
     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
     xmlns:prism="http://prismlibrary.com/"
@@ -13,6 +13,7 @@
     WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <converters:ModuleToHeaderConverter x:Key="ModuleToHeaderConverter" />
+        <converters:TabItemHeaderConverter x:Key="TabItemHeaderConverter" />
         <Style TargetType="ItemsControl">
             <Setter Property="ItemsPanel">
                 <Setter.Value>
@@ -29,62 +30,72 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="120" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <ItemsControl Grid.Row="0" ItemsSource="{Binding Modules, Converter={StaticResource ModuleToHeaderConverter}}">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <MenuItem
-                        Command="{Binding Path=DataContext.InvokeNodeCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
-                        CommandParameter="{Binding}"
-                        Header="{Binding}" />
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="120" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <ItemsControl Grid.Row="0" ItemsSource="{Binding Modules, Converter={StaticResource ModuleToHeaderConverter}}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <MenuItem
+                            Command="{Binding Path=DataContext.InvokeNodeCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
+                            CommandParameter="{Binding}"
+                            Header="{Binding}" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
 
-        <Border
-            Grid.Row="0"
-            Height="1"
-            VerticalAlignment="Bottom"
-            Background="Red" />
+            <Border
+                Grid.Row="0"
+                Height="1"
+                VerticalAlignment="Bottom"
+                Background="Red" />
 
-        <ItemsControl Grid.Row="1" ItemsSource="{Binding Nodes}">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <MenuItem
-                        Command="{Binding Path=DataContext.InvokeModuleCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
-                        CommandParameter="{Binding}"
-                        Header="{Binding Title}" />
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+            <ItemsControl Grid.Row="1" ItemsSource="{Binding Nodes}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <MenuItem
+                            Command="{Binding Path=DataContext.InvokeModuleCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
+                            CommandParameter="{Binding}"
+                            Header="{Binding Title}" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
 
-        <Border
-            Grid.Row="1"
-            Height="1"
-            VerticalAlignment="Bottom"
-            Background="Gray" />
+            <Border
+                Grid.Row="1"
+                Height="1"
+                VerticalAlignment="Bottom"
+                Background="Gray" />
 
-        <Grid Grid.Row="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <ContentControl
-                Grid.Column="0"
-                prism:RegionManager.RegionName="{x:Static contracts:RegionContracts.SideContentRegion}"
-                BorderBrush="Red"
-                BorderThickness="2" />
-            <GridSplitter
-                Grid.Column="1"
-                VerticalAlignment="Stretch"
-                BorderBrush="Gray"
-                BorderThickness="1" />
-            <ContentControl Grid.Column="2" prism:RegionManager.RegionName="{x:Static contracts:RegionContracts.MainContentRegion}" />
+            <Grid Grid.Row="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <TabControl
+                    x:Name="rootTabControl"
+                    Grid.Row="0"
+                    prism:RegionManager.RegionName="{x:Static contracts:RegionContracts.MainContentRegion}">
+                    <TabControl.ItemContainerStyle>
+                        <Style TargetType="TabItem">
+                            <Setter Property="Header" Value="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content.DataContext, Converter={StaticResource TabItemHeaderConverter}}" />
+                        </Style>
+                    </TabControl.ItemContainerStyle>
+                </TabControl>
+                <GridSplitter
+                    Grid.Row="1"
+                    HorizontalAlignment="Stretch"
+                    BorderBrush="Gray"
+                    BorderThickness="1" />
+                <TextBox
+                    Grid.Row="2"
+                    MinHeight="120"
+                    Text="{Binding Message}" />
+            </Grid>
         </Grid>
     </Grid>
 </Window>

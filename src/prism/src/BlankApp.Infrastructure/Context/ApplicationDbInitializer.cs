@@ -4,19 +4,17 @@ using System.Collections.Generic;
 using BlankApp.Doamin.Entities;
 using System.Linq;
 using BlankApp.Infrastructure.Identity.Entities;
-using BlankApp.Doamin.Context;
-using BlankApp.Doamin.Framework;
+using BlackApp.Application.Context;
 
 namespace BlankApp.Infrastructure.Context
 {
     public static class ApplicationDbInitializer
     {
-        public static async Task SeedAsync()
+        public static async Task SeedIdentityAsync(ApplicationIdentityDbContext context)
         {
-            var identityDbContext = EnginContext.Current.Resolve<ApplicationIdentityDbContext>();
-            if (identityDbContext == null)
+            if (context == null)
             {
-                throw new ArgumentNullException(nameof(ApplicationIdentityDbContext));
+                throw new ArgumentNullException(nameof(context));
             }
 
             var users = new List<ApplicationUser>
@@ -24,14 +22,17 @@ namespace BlankApp.Infrastructure.Context
                 new ApplicationUser{ UserName = "管理员", Password = "admin",Role = ApplicationRole.Administrator },
                 new ApplicationUser{ UserName = "普通用户",Password = "user",Role = ApplicationRole.User }
             };
-            identityDbContext.Users = users.AsQueryable();
+            context.Users = users.AsQueryable();
+            await Task.Yield();
+        }
 
-
-            var dbContext = EnginContext.Current.Resolve<ApplicationDbContext>();
-            if (dbContext == null)
+        public static async Task SeedAsync(IApplicationDbContext context)
+        {
+            if (context == null)
             {
-                throw new ArgumentNullException(nameof(IApplicationDbContext));
+                throw new ArgumentNullException(nameof(context));
             }
+
             var persons = new List<Person>();
             Enumerable.Range(0, 100).ToList().ForEach(i =>
             {
@@ -44,7 +45,7 @@ namespace BlankApp.Infrastructure.Context
                 };
                 persons.Add(person);
             });
-            dbContext.Persons = persons.AsQueryable();
+
             await Task.Yield();
         }
     }

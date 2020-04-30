@@ -1,6 +1,5 @@
-﻿using BlankApp.Doamin.Context;
+﻿using BlackApp.Application.Context;
 using BlankApp.Doamin.Entities;
-using BlankApp.Infrastructure.Settings;
 using Prism.Logging;
 using System;
 using System.Linq;
@@ -14,13 +13,11 @@ namespace BlankApp.Infrastructure.Context
     /// </summary>
     public class ApplicationDbContext : IApplicationDbContext
     {
-        private readonly DatabaseSettings _databaseSettings;
         protected readonly ILoggerFacade _loggerFacade;
 
         public IQueryable<Person> Persons { get; set; }
-        public ApplicationDbContext(DatabaseSettings databaseSettings, ILoggerFacade loggerFacade)
+        public ApplicationDbContext(ILoggerFacade loggerFacade)
         {
-            _databaseSettings = databaseSettings ?? throw new ArgumentNullException(nameof(databaseSettings));
             _loggerFacade = loggerFacade ?? throw new ArgumentNullException(nameof(loggerFacade));
         }
 

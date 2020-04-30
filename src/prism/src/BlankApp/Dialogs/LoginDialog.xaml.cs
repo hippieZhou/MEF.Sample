@@ -4,19 +4,16 @@ using System.Windows.Input;
 
 namespace BlankApp.Dialogs
 {
-    /// <summary>
-    /// Interaction logic for LoginDialog.xaml
-    /// </summary>
     public partial class LoginDialog : UserControl
     {
         public LoginDialog()
         {
             InitializeComponent();
         }
-        
+
         private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (sender is Grid root)
+            if (sender is Grid)
             {
                 Window.GetWindow(this).DragMove();
             }

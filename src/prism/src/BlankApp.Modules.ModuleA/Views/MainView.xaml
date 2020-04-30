@@ -11,9 +11,9 @@
     prism:ViewModelLocator.AutoWireViewModel="True"
     mc:Ignorable="d">
     <Grid>
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-            <TextBlock Text="{Binding Message}" />
-            <Button Command="{Binding NavCommand}" Content="打开该模块字中的另一个页面" />
-        </StackPanel>
+        <TextBlock
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Text="{Binding Message}" />
     </Grid>
 </UserControl>

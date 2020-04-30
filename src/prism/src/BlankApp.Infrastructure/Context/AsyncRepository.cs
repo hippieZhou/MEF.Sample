@@ -1,4 +1,4 @@
-﻿using BlankApp.Doamin.Context;
+﻿using BlackApp.Application.Context;
 using BlankApp.Doamin.Entities;
 using System;
 using System.Collections.Generic;

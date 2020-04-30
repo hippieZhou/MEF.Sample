@@ -1,5 +1,4 @@
 ﻿using BlankApp.Dialogs;
-using Prism.Ioc;
 using Prism.Logging;
 using Prism.Services.Dialogs;
 using Prism.Unity;
@@ -13,13 +12,13 @@ namespace BlankApp.Extensions
         {
             app.DispatcherUnhandledException += (sender, args) =>
             {
-                ProcessException(app.Container.Resolve<ILoggerFacade>(), app.Container.Resolve<IDialogService>(), args.Exception);
+                ProcessException(app.Container.Resolve(typeof(ILoggerFacade)) as ILoggerFacade, app.Container.Resolve(typeof(IDialogService)) as IDialogService, args.Exception);
                 args.Handled = true;
             };
 
             AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
             {
-                ProcessException(app.Container.Resolve<ILoggerFacade>(), app.Container.Resolve<IDialogService>(), args.ExceptionObject);
+                ProcessException(app.Container.Resolve(typeof(ILoggerFacade)) as ILoggerFacade, app.Container.Resolve(typeof(IDialogService)) as IDialogService, args.ExceptionObject);
             };
         }
 
@@ -34,7 +33,7 @@ namespace BlankApp.Extensions
             {
                 dialogService.ShowDialog(nameof(NotificationDialog), new DialogParameters($"message=异常提示"), r =>
                 {
-                    Environment.Exit(0);
+                    //Environment.Exit(0);
                 });
             }
         }

@@ -7,30 +7,16 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
     d:DesignHeight="300"
-    d:DesignWidth="1080"
+    d:DesignWidth="300"
     prism:ViewModelLocator.AutoWireViewModel="True"
     mc:Ignorable="d">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" Orientation="Horizontal">
-            <TextBlock VerticalAlignment="Center" Text="关键字:" />
-            <TextBox Width="240" Text="{Binding QueryString}" />
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock HorizontalAlignment="Center" Text="{Binding Message}" />
             <Button
-                Width="48"
-                Command="{Binding SearchCommand}"
-                Content="查找" />
+                HorizontalAlignment="Center"
+                Command="{Binding SayCommand}"
+                Content="ShowTime" />
         </StackPanel>
-        <DataGrid
-            Grid.Row="1"
-            AutoGenerateColumns="False"
-            CanUserResizeColumns="True"
-            ItemsSource="{Binding Persons}">
-            <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Name}" Header="名称" />
-            </DataGrid.Columns>
-        </DataGrid>
     </Grid>
 </UserControl>

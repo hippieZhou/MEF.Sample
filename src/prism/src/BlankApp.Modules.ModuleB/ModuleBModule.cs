@@ -1,5 +1,5 @@
-﻿using BlankApp.Doamin.Contracts;
-using BlankApp.Doamin.Modularity;
+﻿using BlackApp.Application.Contracts;
+using BlackApp.Application.Modularity;
 using BlankApp.Modules.ModuleB.Views;
 using Prism.Ioc;
 using Prism.Modularity;
@@ -7,11 +7,12 @@ using Prism.Modularity;
 namespace BlankApp.Modules.ModuleB
 {
     [Module(OnDemand = true)]
-    [BusinessModule(MainMenu = MainMenuContracts.B, FriendlyName = "模块B")]
+    [BusinessModule(Belong = MainOwnedContracts.A, FriendlyName = "ModuleB")]
     public class ModuleBModule : IModule
     {
         public void OnInitialized(IContainerProvider containerProvider)
         {
+
         }
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
