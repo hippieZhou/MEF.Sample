@@ -20,4 +20,7 @@
     <ProjectReference Include="..\BlankApp.Infrastructure.CrossCutting\BlankApp.Infrastructure.CrossCutting.csproj" />
     <ProjectReference Include="..\BlankApp.Infrastructure\BlankApp.Infrastructure.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Themes\" />
+  </ItemGroup>
 </Project>
